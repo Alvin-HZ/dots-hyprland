@@ -7,20 +7,21 @@ import Music from "./music.js";
 import System from "./system.js";
 import { enableClickthrough } from "../.widgetutils/clickthrough.js";
 import { RoundedCorner } from "../.commonwidgets/cairo_roundedcorner.js";
+import OptionalWorkspaces from './workspaces_hyprland.js';
 
-const OptionalWorkspaces = async () => {
-    try {
-        return (await import('./workspaces_hyprland.js')).default();
-    } catch {
-        try {
-            return (await import('./workspaces_sway.js')).default();
-        } catch {
-            return null;
-        }
-    }
-};
+// const OptionalWorkspaces = async () => {
+//     try {
+//         return (await import('./workspaces_hyprland.js')).default();
+//     } catch {
+//         try {
+//             return (await import('./workspaces_sway.js')).default();
+//         } catch {
+//             return null;
+//         }
+//     }
+// };
 
-export const Bar = async (monitor = 0) => {
+export const Bar = (monitor = 0) => {
     const SideModule = (children) => Widget.Box({
         className: 'bar-sidemodule',
         children: children,
@@ -39,7 +40,7 @@ export const Bar = async (monitor = 0) => {
                 SideModule([Music()]),
                 Widget.Box({
                     homogeneous: true,
-                    children: [await OptionalWorkspaces()],
+                    children: [OptionalWorkspaces()],
                 }),
                 SideModule([System()]),
             ]

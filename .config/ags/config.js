@@ -48,9 +48,9 @@ const Windows = () => [
     Osk(),
     Session(),
     WindowCloser(),
-    // forMonitors(Bar),
-    // forMonitors(BarCornerTopleft),
-    // forMonitors(BarCornerTopright),
+    forMonitors(Bar),
+    forMonitors(BarCornerTopleft),
+    forMonitors(BarCornerTopright),
     forMonitors((id) => Corner(id, 'top left')),
     forMonitors((id) => Corner(id, 'top right')),
     forMonitors((id) => Corner(id, 'bottom left')),
@@ -72,6 +72,6 @@ export default {
 // Bar().catch(print); // Use this to debug the bar. Single monitor only.
 // BarCornerTopleft().catch(print); // Use this to debug the bar. Single monitor only.
 // BarCornerTopright().catch(print); // Use this to debug the bar. Single monitor only.
-forMonitors(Bar);
-forMonitors(BarCornerTopleft);
-forMonitors(BarCornerTopright);
+// forMonitors(Bar);
+// forMonitors(BarCornerTopleft);
+// forMonitors(BarCornerTopright);
