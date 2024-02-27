@@ -187,10 +187,61 @@ apply_gtk() { # Using gradience-cli
     fi
 }
 
+apply_kitty() {
+    # Check if scripts/templates/hypr/colors.conf exists
+    if [ ! -f "scripts/templates/kitty/theme.conf" ]; then
+        echo "Template file not found for Hyprland colors. Skipping that."
+        return
+    fi
+    # Copy template
+    cp "scripts/templates/kitty/theme.conf" "$HOME/.config/kitty/themes/theme_new.conf"
+    # Apply colors
+    for i in "${!colorlist[@]}"; do
+        sed -i "s/{{ ${colorlist[$i]} }}/${colorvalues[$i]#\#}/g" "$HOME/.config/kitty/themes/theme_new.conf"
+    done
+
+
+
+    mv "$HOME/.config/kitty/themes/theme_new.conf" "$HOME/.config/kitty/themes/theme.conf"
+}
+
+apply_nvchad() {
+    # Check if scripts/templates/hypr/colors.conf exists
+    if [ ! -f "scripts/templates/nvchad/ags.lua" ]; then
+        echo "Template file not found for Hyprland colors. Skipping that."
+        return
+    fi
+    # Copy template
+    cp "scripts/templates/nvchad/ags.lua" "$HOME/.config/nvim/lua/custom/themes/ags_new.lua"
+    # Apply colors
+    for i in "${!colorlist[@]}"; do
+        sed -i "s/{{ ${colorlist[$i]} }}/${colorvalues[$i]#\#}/g" "$HOME/.config/nvim/lua/custom/themes/ags_new.lua"
+    done
+
+    lightdark=$(get_light_dark)
+    if [ "$lightdark" = "-l" ]; then
+        sed -i "s/{{ \$colourtheme }}/light/g" "$HOME/.config/nvim/lua/custom/themes/ags_new.lua"
+    else
+        sed -i "s/{{ \$colourtheme }}/dark/g" "$HOME/.config/nvim/lua/custom/themes/ags_new.lua"
+    fi
+
+    mv "$HOME/.config/nvim/lua/custom/themes/ags_new.lua" "$HOME/.config/nvim/lua/custom/themes/ags.lua"
+}
+
 apply_ags() {
     sass "$HOME"/.config/ags/scss/main.scss "$HOME"/.cache/ags/user/generated/style.css
     ags run-js 'openColorScheme.value = true; Utils.timeout(2000, () => openColorScheme.value = false);'
     ags run-js "App.resetCss(); App.applyCss('${HOME}/.cache/ags/user/generated/style.css');"
+}
+
+apply_darkman() { 
+    lightdark=$(get_light_dark)
+
+    if [ "$lightdark" = "-l" ]; then
+        darkman set light
+    else
+        darkman set dark
+    fi
 }
 
 apply_ags &
@@ -201,3 +252,6 @@ apply_foot &
 # apply_gtklock &
 apply_fuzzel &
 apply_term &
+apply_kitty &
+apply_nvchad &
+apply_darkman & 

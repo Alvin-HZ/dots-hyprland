@@ -53,9 +53,9 @@ const BarClock = () => Widget.Box({
         }),
         Widget.Label({
             className: 'txt-smallie',
-            label: GLib.DateTime.new_now_local().format("%A, %d/%m"),
+            label: GLib.DateTime.new_now_local().format("%A, %m/%d"),
             setup: (self) => self.poll(5000, label => {
-                label.label = GLib.DateTime.new_now_local().format("%A, %d/%m");
+                label.label = GLib.DateTime.new_now_local().format("%A, %m/%d");
             }),
         }),
     ],

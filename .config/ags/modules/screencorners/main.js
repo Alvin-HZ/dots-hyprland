@@ -7,7 +7,7 @@ export default (monitor = 0, where = 'bottom left') => {
     return Widget.Window({
         monitor,
         name: `corner${positionString}${monitor}`,
-        layer: 'overlay',
+        layer: 'top',
         anchor: where.split(' '),
         exclusivity: 'ignore',
         visible: true,
