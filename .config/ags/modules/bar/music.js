@@ -180,6 +180,7 @@ export default () => {
                 child: Box({
                     children: [
                         BarResource('RAM Usage', 'memory', `LANG=C free | awk '/^Mem/ {printf("%.2f\\n", ($3/$2) * 100)}'`),
+                        BarResource('CPU Usage', 'settings_motion_mode', `LANG=C top -bn1 | grep Cpu | sed 's/\\,/\\./g' | awk '{print $2}'`),
                         Revealer({
                             revealChild: true,
                             transition: 'slide_left',
@@ -187,8 +188,8 @@ export default () => {
                             child: Box({
                                 className: 'spacing-h-10 margin-left-10',
                                 children: [
-                                    BarResource('Swap Usage', 'swap_horiz', `LANG=C free | awk '/^Swap/ {if ($2 > 0) printf("%.2f\\n", ($3/$2) * 100); else print "0";}'`),
-                                    BarResource('CPU Usage', 'settings_motion_mode', `LANG=C top -bn1 | grep Cpu | sed 's/\\,/\\./g' | awk '{print $2}'`),
+                                    // BarResource('Swap Usage', 'swap_horiz', `LANG=C free | awk '/^Swap/ {if ($2 > 0) printf("%.2f\\n", ($3/$2) * 100); else print "0";}'`),
+                                    // BarResource('CPU Usage', 'settings_motion_mode', `LANG=C top -bn1 | grep Cpu | sed 's/\\,/\\./g' | awk '{print $2}'`),
                                 ]
                             }),
                             setup: (self) => self.hook(Mpris, label => {
@@ -211,7 +212,7 @@ export default () => {
             className: 'spacing-h-5',
             children: [
                 BarGroup({ child: musicStuff }),
-                SystemResourcesOrCustomModule(),
+                // SystemResourcesOrCustomModule(),
             ]
         })
     });
