@@ -31,9 +31,13 @@ const timeRow = Box({
             className: 'txt-small txt',
             setup: (self) => self
                 .poll(60000, label => {
-                    execAsync(['bash', '-c', `w | sed -n '1p' | cut -d, -f1 | cut -d' ' -f4-`])
+                    execAsync(['cat', `/proc/uptime`]) // Taken from Aylur/dotfiles
                         .then(upTimeString => {
-                            label.label = `Uptime ${upTimeString}`;
+                            const up = Number.parseInt(upTimeString.split(".")[0]) / 60
+                            const h = Math.floor(up / 60)
+                            const m = Math.floor(up % 60)
+                            label.label =  `Uptime ${h}:${m < 10 ? "0" + m : m}`
+                            // label.label = `Uptime ${upTimeString}`;
                         }).catch(print);
                 })
             ,
