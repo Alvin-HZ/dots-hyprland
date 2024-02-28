@@ -43,12 +43,12 @@ const scripts = [
         command: `sudo pacman -Syyu`,
         enabled: isArchDistro,
     },
-    {
-        icon: 'flatpak-symbolic',
-        name: 'Uninstall unused flatpak packages',
-        command: `flatpak uninstall --unused`,
-        enabled: hasFlatpak,
-    },
+    // {
+    //     icon: 'flatpak-symbolic',
+    //     name: 'Uninstall unused flatpak packages',
+    //     command: `flatpak uninstall --unused`,
+    //     enabled: hasFlatpak,
+    // },
 ];
 
 export default () => SidebarModule({

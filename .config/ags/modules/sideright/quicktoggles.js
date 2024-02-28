@@ -107,6 +107,47 @@ export const ModuleNightLight = (props = {}) => Widget.Button({ // TODO: Make th
     ...props,
 });
 
+export const ToggleDarkLightMode = (props = {}) => Widget.Button({
+    attribute: {
+        enabled: false,
+    },
+    className: 'txt-small sidebar-iconbutton',
+    tooltipText: 'Toggle Dark/Light Mode',
+    onClicked: (self) => {
+        execAsync(['cat', `${GLib.get_user_cache_dir()}/ags/user/colormode.txt`])
+            .then(async (result) => { 
+                if (result === "-l") {
+                    self.attribute.enabled = true;
+                    self.toggleClassName('sidebar-button-active', self.attribute.enabled);
+                    // execAsync("notify-send 'Urgent notification' 'was light mode' -u critical -a 'Hyprland keybind'")
+                    execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_cache_dir()}/ags/user && echo "" > ${GLib.get_user_cache_dir()}/ags/user/colormode.txt`])
+                        .then(execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/switchwall.sh --noswitch`]).catch(print))
+                        .catch(print);
+                    execAsync('darkman set dark');
+                } else {  
+                    self.attribute.enabled = false;
+                    self.toggleClassName('sidebar-button-active', self.attribute.enabled);
+                    // execAsync("notify-send 'Urgent notification' 'was dark mode' -u critical -a 'Hyprland keybind'")
+                    execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_cache_dir()}/ags/user && echo "-l" > ${GLib.get_user_cache_dir()}/ags/user/colormode.txt`])
+                        .then(execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/switchwall.sh --noswitch`]).catch(print))
+                        .catch(print);
+                    execAsync('darkman set light');
+                }
+            })
+            .catch((err) => {
+                return
+            })
+    },
+    child: MaterialIcon('invert_colors', 'norm'),
+    setup: setupCursorHover,
+    setup: (self) => {
+        setupCursorHover(self);
+        self.attribute.enabled = !!exec(`cat ${GLib.get_user_cache_dir()}/ags/user/colormode.txt`)
+        self.toggleClassName('sidebar-button-active', self.attribute.enabled);
+    },
+    ...props,
+})
+
 export const ModuleInvertColors = async (props = {}) => {
     try {
         const Hyprland = (await import('resource:///com/github/Aylur/ags/service/hyprland.js')).default;

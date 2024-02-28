@@ -224,7 +224,7 @@ export const SearchAndWindows = () => {
                     entryIcon,
                 ]
             }),
-            overviewContent,
+            // overviewContent,
             resultsRevealer,
         ],
         setup: (self) => self

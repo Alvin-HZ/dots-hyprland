@@ -40,6 +40,7 @@ applyStyle().catch(print);
 const Windows = () => [
     // forMonitors(DesktopBackground),
     // Dock(),
+    WindowCloser(),
     Overview(),
     forMonitors(Indicator),
     Cheatsheet(),
@@ -47,7 +48,6 @@ const Windows = () => [
     SideRight(),
     Osk(),
     Session(),
-    WindowCloser(),
     forMonitors(Bar),
     forMonitors(BarCornerTopleft),
     forMonitors(BarCornerTopright),

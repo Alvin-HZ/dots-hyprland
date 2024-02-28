@@ -33,14 +33,14 @@ const APIS = [
         tabIcon: chatGPTTabIcon,
         placeholderText: 'Message the model...',
     },
-    {
-        name: 'Waifus',
-        sendCommand: waifuSendMessage,
-        contentWidget: waifuView,
-        commandBar: waifuCommands,
-        tabIcon: waifuTabIcon,
-        placeholderText: 'Enter tags',
-    },
+    // {
+    //     name: 'Waifus',
+    //     sendCommand: waifuSendMessage,
+    //     contentWidget: waifuView,
+    //     commandBar: waifuCommands,
+    //     tabIcon: waifuTabIcon,
+    //     placeholderText: 'Enter tags',
+    // },
 ];
 let currentApiId = 0;
 APIS[currentApiId].tabIcon.toggleClassName('sidebar-chat-apiswitcher-icon-enabled', true);

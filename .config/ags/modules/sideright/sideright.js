@@ -7,6 +7,7 @@ import {
     ToggleIconWifi,
     HyprToggleIcon,
     ModuleNightLight,
+    ToggleDarkLightMode,
     ModuleInvertColors,
     ModuleIdleInhibitor,
     ModuleEditIcon,
@@ -54,7 +55,8 @@ const togglesBox = Widget.Box({
         await HyprToggleIcon('mouse', 'Raw input', 'input:force_no_accel', {}),
         await HyprToggleIcon('front_hand', 'No touchpad while typing', 'input:touchpad:disable_while_typing', {}),
         ModuleNightLight(),
-        await ModuleInvertColors(),
+        ToggleDarkLightMode(),
+        // await ModuleInvertColors(),
         ModuleIdleInhibitor(),
     ]
 })

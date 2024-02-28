@@ -164,8 +164,8 @@ export default () => Box({
             ,
         }),
     ],
-    setup: (self) => self
-        .on('key-press-event', (widget, event) => { // Handle keybinds
+    setup: (self) => {
+        self.on('key-press-event', (widget, event) => { // Handle keybinds
             if (event.get_state()[1] & Gdk.ModifierType.CONTROL_MASK) { // Ctrl held
                 // Pin sidebar
                 if (event.get_keyval()[1] == Gdk.KEY_p)
@@ -207,5 +207,6 @@ export default () => Box({
             }
 
         })
-    ,
+        switchToTab(1);
+    },
 });
