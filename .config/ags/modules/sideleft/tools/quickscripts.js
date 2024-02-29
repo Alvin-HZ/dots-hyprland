@@ -37,12 +37,13 @@ const scripts = [
         command: `sudo dnf upgrade -y`,
         enabled: distroID == 'fedora',
     },
-    {
-        icon: 'arch-symbolic',
-        name: 'Update packages',
-        command: `sudo pacman -Syyu`,
-        enabled: isArchDistro,
-    },
+    /* Replaced arch script with my own */
+    // {
+    //     icon: 'arch-symbolic',
+    //     name: 'Update packages',
+    //     command: `sudo pacman -Syyu`,
+    //     enabled: isArchDistro,
+    // },
     // {
     //     icon: 'flatpak-symbolic',
     //     name: 'Uninstall unused flatpak packages',

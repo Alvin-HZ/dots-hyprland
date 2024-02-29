@@ -3,6 +3,7 @@ import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 const { Box, Button, EventBox, Label, Revealer, Scrollable, Stack } = Widget;
 const { execAsync, exec } = Utils;
 import QuickScripts from './tools/quickscripts.js';
+import PackageUpdater from './tools/updatepackages.js'
 import ColorPicker from './tools/colorpicker.js';
 
 export default Scrollable({
@@ -12,6 +13,7 @@ export default Scrollable({
         vertical: true,
         className: 'spacing-v-10',
         children: [
+            PackageUpdater(),
             QuickScripts(),
             ColorPicker(),
         ]
