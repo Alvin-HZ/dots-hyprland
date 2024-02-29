@@ -9,7 +9,7 @@ import System from "./normal/system.js";
 import { enableClickthrough } from "../.widgetutils/clickthrough.js";
 import { RoundedCorner } from "../.commonwidgets/cairo_roundedcorner.js";
 import { currentShellMode } from '../../variables.js';
-import OptionalWorkspaces from './workspaces_hyprland.js';
+// import OptionalWorkspaces from './workspaces_hyprland.js';
 
 const BATTERY_LOW = 20;
 
@@ -38,7 +38,7 @@ const FocusOptionalWorkspaces = async () => {
 };
 
 
-export const Bar = (monitor = 0) => {
+export const Bar = async (monitor = 0) => {
     const SideModule = (children) => Widget.Box({
         className: 'bar-sidemodule',
         children: children,
@@ -57,7 +57,7 @@ export const Bar = (monitor = 0) => {
                 SideModule([Music()]),
                 Widget.Box({
                     homogeneous: true,
-                    children: [OptionalWorkspaces()],
+                    children: [await NormalOptionalWorkspaces()],
                 }),
                 SideModule([System()]),
             ]
