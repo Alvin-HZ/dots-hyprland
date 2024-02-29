@@ -4,9 +4,9 @@ import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 import Mpris from 'resource:///com/github/Aylur/ags/service/mpris.js';
 const { Box, Button, EventBox, Label, Overlay, Revealer, Scrollable } = Widget;
 const { execAsync, exec } = Utils;
-import { AnimatedCircProg } from "../.commonwidgets/cairo_circularprogress.js";
-import { MaterialIcon } from '../.commonwidgets/materialicon.js';
-import { showMusicControls } from '../../variables.js';
+import { AnimatedCircProg } from "../../.commonwidgets/cairo_circularprogress.js";
+import { MaterialIcon } from '../../.commonwidgets/materialicon.js';
+import { showMusicControls } from '../../../variables.js';
 
 const CUSTOM_MODULE_CONTENT_INTERVAL_FILE = `${GLib.get_home_dir()}/.cache/ags/user/scripts/custom-module-interval.txt`;
 const CUSTOM_MODULE_CONTENT_SCRIPT = `${GLib.get_home_dir()}/.cache/ags/user/scripts/custom-module-poll.sh`;
@@ -42,16 +42,19 @@ const BarResource = (name, icon, command) => {
         vpack: 'center',
         hpack: 'center',
     });
-    const resourceProgress = Overlay({
-        child: Box({
-            vpack: 'center',
-            className: 'bar-batt',
-            homogeneous: true,
-            children: [
-                MaterialIcon(icon, 'small'),
-            ],
-        }),
-        overlays: [resourceCircProg]
+    const resourceProgress = Box({
+        homogeneous: true,
+        children: [Overlay({
+            child: Box({
+                vpack: 'center',
+                className: 'bar-batt',
+                homogeneous: true,
+                children: [
+                    MaterialIcon(icon, 'small'),
+                ],
+            }),
+            overlays: [resourceCircProg]
+        })]
     });
     const resourceLabel = Label({
         className: 'txt-smallie txt-onSurfaceVariant',
@@ -59,8 +62,8 @@ const BarResource = (name, icon, command) => {
     const widget = Box({
         className: 'spacing-h-4 txt-onSurfaceVariant',
         children: [
-            resourceLabel,
             resourceProgress,
+            resourceLabel,
         ],
         setup: (self) => self
             .poll(5000, () => execAsync(['bash', '-c', command])
@@ -180,7 +183,6 @@ export default () => {
                 child: Box({
                     children: [
                         BarResource('RAM Usage', 'memory', `LANG=C free | awk '/^Mem/ {printf("%.2f\\n", ($3/$2) * 100)}'`),
-                        BarResource('CPU Usage', 'settings_motion_mode', `LANG=C top -bn1 | grep Cpu | sed 's/\\,/\\./g' | awk '{print $2}'`),
                         Revealer({
                             revealChild: true,
                             transition: 'slide_left',
@@ -188,8 +190,8 @@ export default () => {
                             child: Box({
                                 className: 'spacing-h-10 margin-left-10',
                                 children: [
-                                    // BarResource('Swap Usage', 'swap_horiz', `LANG=C free | awk '/^Swap/ {if ($2 > 0) printf("%.2f\\n", ($3/$2) * 100); else print "0";}'`),
-                                    // BarResource('CPU Usage', 'settings_motion_mode', `LANG=C top -bn1 | grep Cpu | sed 's/\\,/\\./g' | awk '{print $2}'`),
+                                    BarResource('Swap Usage', 'swap_horiz', `LANG=C free | awk '/^Swap/ {if ($2 > 0) printf("%.2f\\n", ($3/$2) * 100); else print "0";}'`),
+                                    BarResource('CPU Usage', 'settings_motion_mode', `LANG=C top -bn1 | grep Cpu | sed 's/\\,/\\./g' | awk '{print $2}'`),
                                 ]
                             }),
                             setup: (self) => self.hook(Mpris, label => {
@@ -211,8 +213,8 @@ export default () => {
         child: Box({
             className: 'spacing-h-5',
             children: [
+                SystemResourcesOrCustomModule(),
                 BarGroup({ child: musicStuff }),
-                // SystemResourcesOrCustomModule(),
             ]
         })
     });
