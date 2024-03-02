@@ -213,7 +213,7 @@ export default () => {
         child: Box({
             className: 'spacing-h-5',
             children: [
-                SystemResourcesOrCustomModule(),
+                // SystemResourcesOrCustomModule(),
                 BarGroup({ child: musicStuff }),
             ]
         })
