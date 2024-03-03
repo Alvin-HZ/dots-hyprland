@@ -11,8 +11,6 @@ import { RoundedCorner } from "../.commonwidgets/cairo_roundedcorner.js";
 import { currentShellMode } from '../../variables.js';
 // import OptionalWorkspaces from './workspaces_hyprland.js';
 
-const BATTERY_LOW = 20;
-
 const NormalOptionalWorkspaces = async () => {
     try {
         return (await import('./normal/workspaces_hyprland.js')).default();
@@ -82,8 +80,7 @@ export const Bar = async (monitor = 0) => {
         setup: (self) => {
             self.hook(Battery, (self) => {
                 if(!Battery.available) return;
-                print(Battery.percent)
-                self.toggleClassName('bar-bg-focus-batterylow', Battery.percent <= BATTERY_LOW);
+                self.toggleClassName('bar-bg-focus-batterylow', Battery.percent <= userOptions.battery.low);
             })
         }
     });

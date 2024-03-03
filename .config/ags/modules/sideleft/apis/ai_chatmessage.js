@@ -12,7 +12,7 @@ const LATEX_DIR = `${GLib.get_user_cache_dir()}/ags/media/latex`;
 const CUSTOM_SOURCEVIEW_SCHEME_PATH = `${App.configDir}/assets/themes/sourceviewtheme.xml`;
 const CUSTOM_SCHEME_ID = 'custom';
 const USERNAME = GLib.get_user_name();
-const AI_MESSAGE_CURSOR = '  ...';
+Gtk.IconTheme.get_default().append_search_path(LATEX_DIR);
 
 /////////////////////// Custom source view colorscheme /////////////////////////
 
@@ -109,7 +109,6 @@ LaTeX -headless -input="$text" -output=${outFilePath} -textsize=${fontSize * 1.1
                 Utils.exec(`chmod a+x ${scriptFilePath}`)
                 Utils.timeout(100, () => {
                     Utils.exec(`bash ${scriptFilePath}`);
-                    Gtk.IconTheme.get_default().append_search_path(LATEX_DIR);
                     self.child?.destroy();
                     self.child = Gtk.Image.new_from_file(outFilePath);
                 })
@@ -258,7 +257,7 @@ const MessageContent = (content) => {
                     const lastLabel = kids[kids.length - 1];
                     let blockContent = lines.slice(lastProcessed, lines.length).join('\n');
                     if (!inCode)
-                        lastLabel.label = `${md2pango(blockContent)}${useCursor ? AI_MESSAGE_CURSOR : ''}`;
+                        lastLabel.label = `${md2pango(blockContent)}${useCursor ? userOptions.ai.writingCursor : ''}`;
                     else
                         lastLabel.attribute.updateText(blockContent);
                 }
