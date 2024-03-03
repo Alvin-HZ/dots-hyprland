@@ -172,6 +172,26 @@ apply_gtk() { # Using gradience-cli
     fi
 }
 
+apply_qt() {
+    # Check if scripts/templates/hypr/colors.conf exists
+    if [ ! -f "scripts/templates/qt5ct/Colours.conf" ]; then
+        echo "Template file not found for Hyprland colors. Skipping that."
+        return
+    fi
+    
+    mkdir -p "$HOME"/.cache/ags/user/generated/qt5ct
+    mkdir -p "$HOME"/.config/qt5ct/colors
+
+    # Copy template
+    cp "scripts/templates/qt5ct/Colours.conf" "$HOME"/.cache/ags/user/generated/qt5ct/Colours.conf
+    # Apply colors
+    for i in "${!colorlist[@]}"; do
+        sed -i "s/{{ ${colorlist[$i]} }}/${colorvalues[$i]#\#}/g" "$HOME"/.cache/ags/user/generated/qt5ct/Colours.conf
+    done
+
+    mv "$HOME"/.cache/ags/user/generated/qt5ct/Colours.conf "$HOME"/.config/qt5ct/colors/ags.conf
+}
+
 apply_kitty() {
     # Check if scripts/templates/hypr/colors.conf exists
     if [ ! -f "scripts/templates/kitty/theme.conf" ]; then
@@ -233,6 +253,7 @@ apply_ags &
 apply_hyprland &
 apply_hyprlock &
 apply_gtk &
+apply_qt &
 # apply_gtklock &
 apply_fuzzel &
 apply_term &
