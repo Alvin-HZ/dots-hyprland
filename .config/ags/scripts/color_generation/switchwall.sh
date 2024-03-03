@@ -7,7 +7,7 @@ else
     # Select and set image (hyprland)
     # cd "$HOME/Pictures"
     cd "$HOME/Pictures/Wallpapers/"
-    imgpath=$(yad --width 1200 --height 800 --file --title='Choose wallpaper')
+    imgpath=$(yad --width 1200 --height 800 --file --title='Choose wallpaper' --add-preview --large-preview)
     screensizey=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2 | head -1)
     cursorposx=$(hyprctl cursorpos -j | gojq '.x' 2>/dev/null) || cursorposx=960
     cursorposy=$(hyprctl cursorpos -j | gojq '.y' 2>/dev/null) || cursorposy=540

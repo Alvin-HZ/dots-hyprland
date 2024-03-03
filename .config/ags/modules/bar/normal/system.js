@@ -137,7 +137,7 @@ const Weather = () => Box({
     hpack: 'center',
     className: 'spacing-h-4',
     children: [
-        MaterialIcon('device_thermostat', 'small'),
+        MaterialIcon('device_thermostat', 'small', {className: `icon-material txt-small txt-onSurfaceVariant`}),
         Label({
             className: "txt-onSurfaceVariant",
             label: 'Weather',
