@@ -139,6 +139,7 @@ const Weather = () => Box({
     children: [
         MaterialIcon('device_thermostat', 'small'),
         Label({
+            className: "txt-onSurfaceVariant",
             label: 'Weather',
         })
     ],
