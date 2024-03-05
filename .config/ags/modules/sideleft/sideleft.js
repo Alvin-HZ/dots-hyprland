@@ -13,16 +13,16 @@ import { TabContainer } from '../.commonwidgets/tabcontainer.js';
 
 const contents = [
     {
-        name: 'apis',
-        content: apiWidgets,
-        materialIcon: 'api',
-        friendlyName: 'APIs',
-    },
-    {
         name: 'tools',
         content: toolBox,
         materialIcon: 'home_repair_service',
         friendlyName: 'Tools',
+    },
+    {
+        name: 'apis',
+        content: apiWidgets,
+        materialIcon: 'api',
+        friendlyName: 'APIs',
     },
 ]
 
@@ -126,6 +126,6 @@ export default () => Box({
             }
 
         })
-        switchToTab(1);
+        // switchToTab(1);
     },
 });
