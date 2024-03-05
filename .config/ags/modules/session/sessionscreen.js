@@ -11,7 +11,7 @@ const { exec, execAsync } = Utils;
 const SessionButton = (name, icon, command, props = {}) => {
     const buttonDescription = Widget.Revealer({
         vpack: 'end',
-        transitionDuration: 200,
+        transitionDuration: userOptions.animations.durationSmall,
         transition: 'slide_down',
         revealChild: false,
         child: Widget.Label({
@@ -61,7 +61,6 @@ const SessionButton = (name, icon, command, props = {}) => {
 
 export default () => {
     // lock, logout, sleep
-    // const lockButton = SessionButton('Lock', 'lock', () => { App.closeWindow('session'); execAsync('gtklock') });
     const lockButton = SessionButton('Lock', 'lock', () => { App.closeWindow('session'); execAsync(['loginctl', 'lock-session']) });
     const logoutButton = SessionButton('Logout', 'logout', () => { App.closeWindow('session'); execAsync(['bash', '-c', 'pkill Hyprland || pkill sway']) });
     const sleepButton = SessionButton('Sleep', 'sleep', () => { App.closeWindow('session'); execAsync('systemctl suspend') });

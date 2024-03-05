@@ -88,7 +88,7 @@ const BarBattery = () => Box({
     className: 'spacing-h-4 txt-onSurfaceVariant',
     children: [
         Revealer({
-            transitionDuration: 150,
+            transitionDuration: userOptions.animations.durationSmall,
             revealChild: false,
             transition: 'slide_right',
             child: MaterialIcon('bolt', 'norm', { tooltipText: "Charging" }),
@@ -135,11 +135,10 @@ const BarBattery = () => Box({
 const Weather = () => Box({
     hexpand: true,
     hpack: 'center',
-    className: 'spacing-h-4',
+    className: 'spacing-h-4 txt-onSurfaceVariant',
     children: [
-        MaterialIcon('device_thermostat', 'small', {className: `icon-material txt-small txt-onSurfaceVariant`}),
+        MaterialIcon('device_thermostat', 'small'),
         Label({
-            className: "txt-onSurfaceVariant",
             label: 'Weather',
         })
     ],
