@@ -23,14 +23,14 @@ let userConfigOptions = {
         'layout': 'qwerty_full', // See modules/onscreenkeyboard/onscreenkeyboard.js for available layouts
     },
     'overview': {
-        'scale': 0.18, // Relative to screen size
-        'numOfRows': 2,
+        'scale': 0.12, // Relative to screen size
+        'numOfRows': 1,
         'numOfCols': 5,
         'wsNumScale': 0.09,
         'wsNumMarginScale': 0.07,
     },
     'search': {
-        'engineBaseUrl': 'https://www.google.com/search?q=',
+        'engineBaseUrl': 'https://www.bing.com/search?q=',
         'excludedSites': ['quora.com'],
     },
     'weather': {
