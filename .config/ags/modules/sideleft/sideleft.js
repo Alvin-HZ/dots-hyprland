@@ -10,6 +10,7 @@ import toolBox from './toolbox.js';
 import apiWidgets from './apiwidgets.js';
 import { chatEntry } from './apiwidgets.js';
 import { TabContainer } from '../.commonwidgets/tabcontainer.js';
+import { checkKeybind } from '../.widgetutils/keybind.js';
 
 const contents = [
     {
@@ -83,20 +84,17 @@ export default () => Box({
         }),
         widgetContent,
     ],
-    setup: (self) => {
-        self.on('key-press-event', (widget, event) => { // Handle keybinds
-            if (event.get_state()[1] & Gdk.ModifierType.CONTROL_MASK) { // Ctrl held
-                // Pin sidebar
-                if (event.get_keyval()[1] == Gdk.KEY_p)
-                    pinButton.attribute.toggle(pinButton);
-                // Switch sidebar tab
-                else if (event.get_keyval()[1] === Gdk.KEY_Tab)
-                    widgetContent.cycleTab();
-                else if (event.get_keyval()[1] === Gdk.KEY_Page_Up)
-                    widgetContent.prevTab();
-                else if (event.get_keyval()[1] === Gdk.KEY_Page_Down)
-                    widgetContent.nextTab();
-            }
+    setup: (self) => self
+        .on('key-press-event', (widget, event) => { // Handle keybinds
+            if (checkKeybind(event, userOptions.keybinds.sidebar.pin))
+                pinButton.attribute.toggle(pinButton);
+            else if (checkKeybind(event, userOptions.keybinds.sidebar.cycleTab))
+                widgetContent.cycleTab();
+            else if (checkKeybind(event, userOptions.keybinds.sidebar.nextTab))
+                widgetContent.nextTab();
+            else if (checkKeybind(event, userOptions.keybinds.sidebar.prevTab))
+                widgetContent.prevTab();
+
             if (widgetContent.attribute.names[widgetContent.attribute.shown.value] == 'APIs') { // If api tab is focused
                 // Focus entry when typing
                 if ((
@@ -113,19 +111,16 @@ export default () => Box({
                     buffer.place_cursor(buffer.get_iter_at_offset(-1));
                 }
                 // Switch API type
-                else if (!(event.get_state()[1] & Gdk.ModifierType.CONTROL_MASK) &&
-                    event.get_keyval()[1] === Gdk.KEY_Page_Down) {
+                else if (checkKeybind(event, userOptions.keybinds.sidebar.apis.nextTab)) {
                     const toSwitchTab = widgetContent.attribute.children[widgetContent.attribute.shown.value];
                     toSwitchTab.attribute.nextTab();
                 }
-                else if (!(event.get_state()[1] & Gdk.ModifierType.CONTROL_MASK) &&
-                    event.get_keyval()[1] === Gdk.KEY_Page_Up) {
+                else if (checkKeybind(event, userOptions.keybinds.sidebar.apis.prevTab)) {
                     const toSwitchTab = widgetContent.attribute.children[widgetContent.attribute.shown.value];
                     toSwitchTab.attribute.prevTab();
                 }
             }
 
         })
-        // switchToTab(1);
-    },
+    ,
 });

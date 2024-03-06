@@ -144,7 +144,7 @@ const Weather = () => Box({
     ],
     setup: (self) => self.poll(900000, async (self) => {
         const WEATHER_CACHE_PATH = WEATHER_CACHE_FOLDER + '/wttr.in.txt';
-        const updateWeatherForCity = (city) => execAsync(`curl https://wttr.in/${city}?format=j1`)
+        const updateWeatherForCity = (city) => execAsync(`curl https://wttr.in/${city.replace(/ /g, '%20')}?format=j1`)
             .then(output => {
                 const weather = JSON.parse(output);
                 Utils.writeFile(JSON.stringify(weather), WEATHER_CACHE_PATH)
@@ -175,7 +175,7 @@ const Weather = () => Box({
                 }
             });
         if (userOptions.weather.city != '' && userOptions.weather.city != null) {
-            updateWeatherForCity(userOptions.weather.city);
+            updateWeatherForCity(userOptions.weather.city.replace(/ /g, '%20'));
         }
         else {
             Utils.execAsync('curl ipinfo.io')
