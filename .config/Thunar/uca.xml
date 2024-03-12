@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+<action>
+	<icon>utilities-terminal</icon>
+	<name>Open Terminal Here</name>
+	<submenu></submenu>
+	<unique-id>1709482500740946-1</unique-id>
+	<command>exo-open --working-directory %f --launch TerminalEmulator</command>
+	<description>Example for a custom action</description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+</action>
+<action>
+	<icon></icon>
+	<name>Search</name>
+	<submenu></submenu>
+	<unique-id>1709484382341066-1</unique-id>
+	<command>catfish --path=%f</command>
+	<description>Search for files and folders</description>
+	<range>*</range>
+	<patterns>*</patterns>
+	<directories/>
+</action>
+<action>
+	<icon></icon>
+	<name>Create Link</name>
+	<submenu></submenu>
+	<unique-id>1709487687219946-1</unique-id>
+	<command>ln -s %f %f.link</command>
+	<description>Creates a symbolic link</description>
+	<range>*</range>
+	<patterns>*</patterns>
+	<directories/>
+	<audio-files/>
+	<image-files/>
+	<other-files/>
+	<text-files/>
+	<video-files/>
+</action>
+<action>
+	<icon></icon>
+	<name>Open as root</name>
+	<submenu></submenu>
+	<unique-id>1709603227763742-1</unique-id>
+	<command>thunar admin://%f</command>
+	<description>Opens a folder as root</description>
+	<range>*</range>
+	<patterns>*</patterns>
+	<directories/>
+</action>
+</actions>
