@@ -1,5 +1,8 @@
 
-let userConfigOptions = {
+import userOverrides from '../../user_options.js';
+
+// Defaults
+let configOptions = {
     // General stuff
     'ai': {
         'defaultGPTProvider': "openai",
@@ -25,17 +28,18 @@ let userConfigOptions = {
         'layout': "qwerty_full", // See modules/onscreenkeyboard/onscreenkeyboard.js for available layouts
     },
     'overview': {
-        'scale': 0.12, // Relative to screen size
-        'numOfRows': 1,
+        'scale': 0.18, // Relative to screen size
+        'numOfRows': 2,
         'numOfCols': 5,
         'wsNumScale': 0.09,
         'wsNumMarginScale': 0.07,
     },
     'sidebar': {
         'imageColumns': 2,
+        'imageBooruCount': 6,
     },
     'search': {
-        'engineBaseUrl': "https://www.bing.com/search?q=",
+        'engineBaseUrl': "https://www.google.com/search?q=",
         'excludedSites': ["quora.com"],
     },
     'time': {
@@ -44,9 +48,9 @@ let userConfigOptions = {
         // For seconds, add "%S" and set interval to 1000
         'format': "%H:%M",
         'interval': 5000,
-        'dateFormatLong': "%A, %m/%d", // On bar
+        'dateFormatLong': "%A, %d/%m", // On bar
         'dateInterval': 5000,
-        'dateFormat': "%m/%d", // On notif time
+        'dateFormat': "%d/%m", // On notif time
     },
     'weather': {
         'city': "",
@@ -68,13 +72,39 @@ let userConfigOptions = {
             '': "image-missing",
         }
     },
-    'keybinds': { 
+    'keybinds': {
+        // Format: Mod1+Mod2+key. CaSe SeNsItIvE!
+        // Modifiers: Shift Ctrl Alt Hyper Meta
+        // See https://docs.gtk.org/gdk3/index.html#constants for the other keys (they are listed as KEY_key)
+        'overview': {
+            'altMoveLeft': "Ctrl+b",
+            'altMoveRight': "Ctrl+f",
+            'deleteToEnd': "Ctrl+k",
+        },
         'sidebar': {
+            'apis': {
+                'nextTab': "Page_Down",
+                'prevTab': "Page_Up",
+            },
             'pin': "Ctrl+p",
+            'cycleTab': "Ctrl+Tab",
             'nextTab': "Ctrl+Page_Down",
             'prevTab': "Ctrl+Page_Up",
         },
     },
 }
 
-export default userConfigOptions;
+// Override defaults with user's options
+function overrideConfigRecursive(userOverrides, configOptions = {}) {
+    for (const [key, value] of Object.entries(userOverrides)) {
+        if (typeof value === 'object') {
+            overrideConfigRecursive(value, configOptions[key]);
+        } else {
+            configOptions[key] = value;
+        }
+    }
+}
+overrideConfigRecursive(userOverrides, configOptions);
+
+globalThis['userOptions'] = configOptions;
+export default configOptions;

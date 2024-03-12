@@ -133,18 +133,18 @@ export default () => {
             ]
         })]
     });
-    const trackTitle = Scrollable({
+    const trackTitle = Label({
         hexpand: true,
-        child: Label({
-            className: 'txt-smallie txt-onSurfaceVariant',
-            setup: (self) => self.hook(Mpris, label => {
-                const mpris = Mpris.getPlayer('');
-                if (mpris)
-                    label.label = `${trimTrackTitle(mpris.trackTitle)} • ${mpris.trackArtists.join(', ')}`;
-                else
-                    label.label = 'No media';
-            }),
-        })
+        className: 'txt-smallie txt-onSurfaceVariant',
+        truncate: 'end', 
+        maxWidthChars: 10, // Doesn't matter, just needs to be non negative
+        setup: (self) => self.hook(Mpris, label => {
+            const mpris = Mpris.getPlayer('');
+            if (mpris)
+                label.label = `${trimTrackTitle(mpris.trackTitle)} • ${mpris.trackArtists.join(', ')}`;
+            else
+                label.label = 'No media';
+        }),
     })
     const musicStuff = Box({
         className: 'spacing-h-10',
@@ -207,9 +207,13 @@ export default () => {
     return EventBox({
         onScrollUp: (self) => switchToRelativeWorkspace(self, -1),
         onScrollDown: (self) => switchToRelativeWorkspace(self, +1),
-        onPrimaryClickRelease: () => showMusicControls.setValue(!showMusicControls.value),
-        onSecondaryClickRelease: () => execAsync(['bash', '-c', 'playerctl next || playerctl position `bc <<< "100 * $(playerctl metadata mpris:length) / 1000000 / 100"` &']).catch(print),
-        onMiddleClickRelease: () => execAsync('playerctl play-pause').catch(print),
+        onPrimaryClick: () => showMusicControls.setValue(!showMusicControls.value),
+        onSecondaryClick: () => execAsync(['bash', '-c', 'playerctl next || playerctl position `bc <<< "100 * $(playerctl metadata mpris:length) / 1000000 / 100"` &']).catch(print),
+        onMiddleClick: () => execAsync('playerctl play-pause').catch(print),
+        setup: (self) => self.on('button-press-event', (self, event) => {
+            if (event.get_button()[1] === 8) // Side button
+                execAsync('playerctl previous').catch(print)
+        }),
         child: Box({
             className: 'spacing-h-4',
             children: [

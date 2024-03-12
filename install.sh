@@ -12,6 +12,7 @@ startask (){
 printf "\e[34m[$0]: Hi there!\n"
 printf 'This script 1. only works for ArchLinux and Arch-based distros.\n'
 printf '            2. has not been fully tested, use at your own risk.\n'
+printf '            3. does not provide GPU things and you must have set it up yourself.\n'
 printf "\e[31m"
 printf "Please CONFIRM that you HAVE ALREADY BACKED UP \"$HOME/.config/\" and \"$HOME/.local/\" folders!\n"
 printf "\e[97m"
@@ -159,10 +160,12 @@ v rsync -av --delete --exclude '/user_options.js' .config/ags/ "$HOME"/.config/a
 t="$HOME/.config/ags/user_options.js"
 if [ -f $t ];then
   echo -e "\e[34m[$0]: \"$t\" already exists.\e[0m"
-  v cp -f .config/ags/user_options.js $t.new
+# v cp -f .config/ags/user_options.js $t.new
+  existed_ags_opt=y
 else
   echo -e "\e[33m[$0]: \"$t\" does not exist yet.\e[0m"
   v cp .config/ags/user_options.js $t
+  existed_ags_opt=n
 fi
 
 # For Hyprland
@@ -171,9 +174,11 @@ t="$HOME/.config/hypr/hyprland.conf"
 if [ -f $t ];then
   echo -e "\e[34m[$0]: \"$t\" already exists.\e[0m"
   v cp -f .config/hypr/hyprland.conf $t.new
+  existed_hypr_conf=y
 else
   echo -e "\e[33m[$0]: \"$t\" does not exist yet.\e[0m"
   v cp .config/hypr/hyprland.conf $t
+  existed_hypr_conf=n
 fi
 t="$HOME/.config/hypr/custom"
 if [ -d $t ];then
@@ -196,3 +201,12 @@ printf "\e[36m[$0]: Finished. See the \"Import Manually\" folder and grab anythi
 printf "\e[36mPress \e[30m\e[46m Ctrl+Super+T \e[0m\e[36m to select a wallpaper\e[97m\n"
 printf "\e[36mPress \e[30m\e[46m Super+/ \e[0m\e[36m for a list of keybinds\e[97m\n"
 echo "See https://end-4.github.io/dots-hyprland-wiki/en for more info."
+case $existed_ags_opt in
+  y) printf "\n\e[33m[$0]: Warning: \"~/.config/ags/user_options.js\" already existed before and we didn't overwrite it. \e[97m\n"
+#    printf "\e[33mPlease use \"~/.config/ags/user_options.js.new\" as a reference for a proper format.\e[97m\n"
+;;esac
+case $existed_hypr_conf in
+  y) printf "\n\e[33m[$0]: Warning: \"~/.config/hypr/hyprland.conf\" already existed before and we didn't overwrite it. \e[97m\n"
+     printf "\e[33mPlease use \"~/.config/hypr/hyprland.conf.new\" as a reference for a proper format.\e[97m\n"
+     printf "\e[33mIf this is your first time installation, you must overwrite \"~/.config/hypr/hyprland.conf\" with \"~/.config/hypr/hyprland.conf.new\".\e[97m\n"
+;;esac
