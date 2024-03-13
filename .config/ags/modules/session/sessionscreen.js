@@ -61,7 +61,7 @@ const SessionButton = (name, icon, command, props = {}) => {
 
 export default () => {
     // lock, logout, sleep
-    const lockButton = SessionButton('Lock', 'lock', () => { App.closeWindow('session'); execAsync(['loginctl', 'lock-session']) });
+    const lockButton = SessionButton('Lock', 'lock', () => { App.closeWindow('session'); execAsync(['hyprlock']) });
     const logoutButton = SessionButton('Logout', 'logout', () => { App.closeWindow('session'); execAsync(['bash', '-c', 'pkill Hyprland || pkill sway']) });
     const sleepButton = SessionButton('Sleep', 'sleep', () => { App.closeWindow('session'); execAsync('systemctl suspend') });
     // hibernate, shutdown, reboot
