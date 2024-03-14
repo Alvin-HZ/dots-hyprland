@@ -186,6 +186,7 @@ apply_kitty() {
         return
     fi
     # Copy template
+    mkdir "$HOME/.config/kitty/themes/"
     cp "scripts/templates/kitty/theme.conf" "$HOME/.config/kitty/themes/theme_new.conf"
     # Apply colors
     for i in "${!colorlist[@]}"; do
