@@ -11,7 +11,7 @@ export const keybindList = [[
             { "keys": ["", "+", "PageUp"], "action": "Go to workspace on the left" },
             { "keys": ["", "+", "PageDown"], "action": "Go to workspace on the right" }
         ],
-        "id": 1
+        "appeartick": 1
     },
     {
         "icon": "overview_key",
@@ -22,7 +22,7 @@ export const keybindList = [[
             { "keys": ["", "Alt", "+", "PageUp"], "action": "Move window to workspace on the left" },
             { "keys": ["", "Alt", "+", "PageDown"], "action": "Move window to workspace on the right" }
         ],
-        "id": 2
+        "appeartick": 1
     },
     {
         "icon": "move_group",
@@ -38,7 +38,7 @@ export const keybindList = [[
             { "keys": ["", "+", "F"], "action": "Fullscreen" },
             { "keys": ["", "Alt", "+", "F"], "action": "Fake fullscreen" }
         ],
-        "id": 3
+        "appeartick": 1
     }
 ],
 [
@@ -65,7 +65,7 @@ export const keybindList = [[
             // { "keys": ["", "+", "M"], "action": "Toggle useless audio visualizer" },
             // { "keys": ["(right)Ctrl"], "action": "Dismiss notification & close menus" }
         ],
-        "id": 4
+        "appeartick": 2
     },
     {
         "icon": "construction",
@@ -79,8 +79,22 @@ export const keybindList = [[
             { "keys": ["Ctrl", "Alt", "+", "R"], "action": "Record region with sound" },
             { "keys": ["", "Shift", "Alt", "+", "R"], "action": "Record screen with sound" }
         ],
-        "id": 5
+        "appeartick": 2
     },
+    // {
+    //     "icon": "edit",
+    //     "name": "Edit mode",
+    //     "binds": [
+    //         { "keys": ["Esc"], "action": "Exit Edit mode" },
+    //         { "keys": ["#"], "action": "Go to to workspace #" },
+    //         { "keys": ["Alt", "+", "#"], "action": "Dump windows to workspace #" },
+    //         { "keys": ["Shift", "+", "#"], "action": "Swap windows with workspace #" },
+    //         { "keys": ["Lmb"], "action": "Move window" },
+    //         { "keys": ["Mmb"], "action": "Move window" },
+    //         { "keys": ["Rmb"], "action": "Resize window" }
+    //     ],
+    //     "appeartick": 2
+    // }
 ],
 [
     {
@@ -93,7 +107,7 @@ export const keybindList = [[
             { "keys": ["", "+", "X"], "action": "Launch editor: GNOME Text Editor" },
             { "keys": ["", "+", "I"], "action": "Launch settings: GNOME Control center" }
         ],
-        "id": 6
+        "appeartick": 3
     },
     {
         "icon": "keyboard",
@@ -102,7 +116,7 @@ export const keybindList = [[
             { "keys": ["", "+", "V"], "action": "Clipboard history  >>  clipboard" },
             { "keys": ["", "+", "."], "action": "Emoji picker  >>  clipboard" },
         ],
-        "id": 7
+        "appeartick": 3
     },
     {
         "icon": "terminal",
@@ -116,6 +130,6 @@ export const keybindList = [[
             { "keys": [">color"], "action": "Pick acccent color" },
             { "keys": [">todo"], "action": "Type something after that to add a To-do item" },
         ],
-        "id": 8
+        "appeartick": 3
     }
 ]];

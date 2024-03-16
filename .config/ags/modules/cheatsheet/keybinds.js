@@ -5,10 +5,10 @@ export const Keybinds = () => Widget.Box({
     vertical: false,
     className: "spacing-h-15",
     homogeneous: true,
-    children: keybindList.map((group, _) => Widget.Box({ // Columns
+    children: keybindList.map((group, i) => Widget.Box({ // Columns
         vertical: true,
         className: "spacing-v-15",
-        children: group.map((category, _) => Widget.Box({ // Categories
+        children: group.map((category, i) => Widget.Box({ // Categories
             vertical: true,
             className: "spacing-v-15",
             children: [
@@ -18,7 +18,7 @@ export const Keybinds = () => Widget.Box({
                     children: [
                         Widget.Label({
                             xalign: 0,
-                            className: `icon-material txt-larger cheatsheet-color-${category.id}`,
+                            className: "icon-material txt txt-larger",
                             label: category.icon,
                         }),
                         Widget.Label({
@@ -35,10 +35,10 @@ export const Keybinds = () => Widget.Box({
                         Widget.Box({ // Keys
                             vertical: true,
                             homogeneous: true,
-                            children: category.binds.map((keybinds, _) => Widget.Box({ // Binds
+                            children: category.binds.map((keybinds, i) => Widget.Box({ // Binds
                                 vertical: false,
-                                children: keybinds.keys.map((key, _) => Widget.Label({ // Specific keys
-                                    className: `${['OR', '+'].includes(key) ? 'cheatsheet-key-notkey' : 'cheatsheet-key cheatsheet-color-' + category.id} txt-small`,
+                                children: keybinds.keys.map((key, i) => Widget.Label({ // Specific keys
+                                    className: `${['OR', '+'].includes(key) ? 'cheatsheet-key-notkey' : 'cheatsheet-key'} txt-small`,
                                     label: key,
                                 }))
                             }))
@@ -46,7 +46,7 @@ export const Keybinds = () => Widget.Box({
                         Widget.Box({ // Actions
                             vertical: true,
                             homogeneous: true,
-                            children: category.binds.map((keybinds, _) => Widget.Label({ // Binds
+                            children: category.binds.map((keybinds, i) => Widget.Label({ // Binds
                                 xalign: 0,
                                 label: keybinds.action,
                                 className: "txt chearsheet-action txt-small",

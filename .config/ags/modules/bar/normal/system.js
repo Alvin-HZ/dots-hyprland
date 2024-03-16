@@ -63,7 +63,7 @@ const UtilButton = ({ name, icon, onClicked }) => Button({
 
 const Utilities = () => Box({
     hpack: 'center',
-    className: 'spacing-h-4',
+    className: 'spacing-h-4 txt-onSurfaceVariant',
     children: [
         UtilButton({
             name: 'Screen snip', icon: 'screenshot_region', onClicked: () => {
@@ -85,7 +85,7 @@ const Utilities = () => Box({
 })
 
 const BarBattery = () => Box({
-    className: 'spacing-h-4 bar-batt-txt',
+    className: 'spacing-h-4 txt-onSurfaceVariant',
     children: [
         Revealer({
             transitionDuration: userOptions.animations.durationSmall,
@@ -97,7 +97,7 @@ const BarBattery = () => Box({
             }),
         }),
         Label({
-            className: 'txt-smallie',
+            className: 'txt-smallie txt-onSurfaceVariant',
             setup: (self) => self.hook(Battery, label => {
                 label.label = `${Battery.percent}%`;
             }),
@@ -108,7 +108,7 @@ const BarBattery = () => Box({
                 className: 'bar-batt',
                 homogeneous: true,
                 children: [
-                    MaterialIcon('battery_full', 'small'),
+                    MaterialIcon('settings_heart', 'small'),
                 ],
                 setup: (self) => self.hook(Battery, box => {
                     box.toggleClassName('bar-batt-low', Battery.percent <= userOptions.battery.low);

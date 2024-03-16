@@ -204,6 +204,9 @@ const BooruPage = (taglist) => {
             overlays: [imageActions]
         })
     }
+    const colorIndicator = Box({
+        className: `sidebar-chat-indicator`,
+    });
     const downloadState = Stack({
         homogeneous: false,
         transition: 'slide_up_down',
@@ -230,7 +233,7 @@ const BooruPage = (taglist) => {
                 hscroll: 'automatic',
                 child: Box({
                     hpack: 'fill',
-                    className: 'spacing-h-5',
+                    className: 'sidebar-waifu-content spacing-h-5',
                     children: [
                         ...taglist.map((tag) => CommandButton(tag)),
                         Box({ hexpand: true }),
@@ -243,7 +246,8 @@ const BooruPage = (taglist) => {
     const pageImageGrid = Grid({
         // columnHomogeneous: true,
         // rowHomogeneous: true,
-        className: 'sidebar-booru-imagegrid',
+        className: 'sidebar-waifu-image',
+        // css: 'min-height: 90px;'
     });
     const pageImageRevealer = Revealer({
         transition: 'slide_down',
@@ -252,7 +256,6 @@ const BooruPage = (taglist) => {
         child: pageImageGrid,
     });
     const thisPage = Box({
-        homogeneous: true,
         className: 'sidebar-chat-message',
         attribute: {
             'imagePath': '',
@@ -286,17 +289,20 @@ const BooruPage = (taglist) => {
                 downloadIndicator.attribute.hide();
             },
         },
-        children: [Box({
-            vertical: true,
-            className: 'spacing-v-5',
-            children: [
-                pageHeading,
-                Box({
-                    vertical: true,
-                    children: [pageImageRevealer],
-                })
-            ]
-        })],
+        children: [
+            colorIndicator,
+            Box({
+                vertical: true,
+                className: 'spacing-v-5',
+                children: [
+                    pageHeading,
+                    Box({
+                        vertical: true,
+                        children: [pageImageRevealer],
+                    })
+                ]
+            })
+        ],
     });
     return thisPage;
 }
