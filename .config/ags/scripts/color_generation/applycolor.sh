@@ -211,9 +211,9 @@ apply_code() {
 	lightdark=$(get_light_dark)
 	echo light
 	if [ "$lightdark" = "-l" ]; then
-		sed -i 's/"workbench.colorTheme": ".*"/"workbench.colorTheme": "Default Light+"/g' ~/.config/Code/User/settings.json
+		sed -i 's/"workbench.colorTheme": ".*"/"workbench.colorTheme": "Default Light Modern"/g' ~/.config/Code/User/settings.json
 	else
-		sed -i 's/"workbench.colorTheme": ".*"/"workbench.colorTheme": "Default Dark+"/g' ~/.config/Code/User/settings.json
+		sed -i 's/"workbench.colorTheme": ".*"/"workbench.colorTheme": "Default Dark Modern"/g' ~/.config/Code/User/settings.json
 	fi
 
 }

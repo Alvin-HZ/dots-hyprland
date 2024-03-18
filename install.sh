@@ -194,6 +194,9 @@ fi
 # since the files here come from different places, not only about one program.
 v rsync -av ".local/bin/" "$HOME/.local/bin/"
 
+# Fix xdg portal
+sudo echo -e "[preferred]\ndefault=gtk;hyprland" | sudo tee /usr/share/xdg-desktop-portal/hyprland-portals.conf
+
 # Prevent hyprland from not fully loaded
 sleep 1
 try hyprctl reload
