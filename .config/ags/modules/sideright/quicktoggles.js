@@ -9,6 +9,7 @@ const { execAsync, exec } = Utils;
 import { BluetoothIndicator, NetworkIndicator } from '../.commonwidgets/statusicons.js';
 import { setupCursorHover } from '../.widgetutils/cursorhover.js';
 import { MaterialIcon } from '../.commonwidgets/materialicon.js';
+import { darkMode } from '../.miscutils/system.js';
 
 export const ToggleIconWifi = (props = {}) => Widget.Button({
     className: 'txt-small sidebar-iconbutton',
@@ -106,22 +107,22 @@ export const ToggleDarkLightMode = (props = {}) => Widget.Button({
     className: 'txt-small sidebar-iconbutton',
     tooltipText: 'Toggle Dark/Light Mode',
     onClicked: (self) => {
-        execAsync(['cat', `${GLib.get_user_cache_dir()}/ags/user/colormode.txt`])
+        execAsync('bash -c "sed -n \'1p\' $HOME/.cache/ags/user/colormode.txt"')
             .then(async (result) => { 
-                if (result === "-l") {
+                if (result === "light") {
                     self.attribute.enabled = true;
                     self.toggleClassName('sidebar-button-active', self.attribute.enabled);
                     // execAsync("notify-send 'Urgent notification' 'was light mode' -u critical -a 'Hyprland keybind'")
-                    execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_cache_dir()}/ags/user && echo "" > ${GLib.get_user_cache_dir()}/ags/user/colormode.txt`])
-                        .then(execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/switchwall.sh --noswitch`]).catch(print))
+                    execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_cache_dir()}/ags/user && sed -i "1s/.*/dark/"  ${GLib.get_user_cache_dir()}/ags/user/colormode.txt`])
+                        .then(execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/switchcolor.sh`]))
                         .catch(print);
                     execAsync('darkman set dark');
                 } else {  
                     self.attribute.enabled = false;
                     self.toggleClassName('sidebar-button-active', self.attribute.enabled);
                     // execAsync("notify-send 'Urgent notification' 'was dark mode' -u critical -a 'Hyprland keybind'")
-                    execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_cache_dir()}/ags/user && echo "-l" > ${GLib.get_user_cache_dir()}/ags/user/colormode.txt`])
-                        .then(execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/switchwall.sh --noswitch`]).catch(print))
+                    execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_cache_dir()}/ags/user && sed -i "1s/.*/light/"  ${GLib.get_user_cache_dir()}/ags/user/colormode.txt`])
+                        .then(execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/switchcolor.sh`]))
                         .catch(print);
                     execAsync('darkman set light');
                 }
