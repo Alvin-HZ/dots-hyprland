@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-term_alpha=100 # Set this to < 100 make all your terminals transparent
+term_alpha=100 #Set this to < 100 make all your terminals transparent
+# sleep 0 # idk i wanted some delay or colors dont get applied properly
 if [ ! -d "$HOME"/.cache/ags/user/generated ]; then
 	mkdir -p "$HOME"/.cache/ags/user/generated
 fi
@@ -30,13 +31,13 @@ transparentize() {
 }
 
 get_light_dark() {
-	lightdark=""
-	if [ ! -f "$HOME"/.cache/ags/user/colormode.txt ]; then
-		echo "" >"$HOME"/.cache/ags/user/colormode.txt
-	else
-		lightdark=$(cat "$HOME"/.cache/ags/user/colormode.txt) # either "" or "-l"
-	fi
-	echo "$lightdark"
+    lightdark=""
+    if [ ! -f "$HOME"/.cache/ags/user/colormode.txt ]; then
+        echo "" > "$HOME"/.cache/ags/user/colormode.txt
+    else
+        lightdark=$(sed -n '1p' "$HOME/.cache/ags/user/colormode.txt")
+    fi
+    echo "$lightdark"
 }
 
 apply_fuzzel() {
@@ -129,16 +130,16 @@ apply_gtk() { # Using gradience-cli
 	mkdir -p "$HOME/.config/presets" # create gradience presets folder
 	gradience-cli apply -p "$HOME"/.cache/ags/user/generated/gradience/preset.json --gtk both
 
-	# Set light/dark preference
-	# And set GTK theme manually as Gradience defaults to light adw-gtk3
-	# (which is unreadable when broken when you use dark mode)
-	if [ "$lightdark" = "-l" ]; then
-		gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3'
-		gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
-	else
-		gsettings set org.gnome.desktop.interface gtk-theme adw-gtk3-dark
-		gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-	fi
+    # Set light/dark preference
+    # And set GTK theme manually as Gradience defaults to light adw-gtk3
+    # (which is unreadable when broken when you use dark mode)
+    if [ "$lightdark" = "light" ]; then
+        gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3'
+        gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
+    else
+        gsettings set org.gnome.desktop.interface gtk-theme adw-gtk3-dark
+        gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+    fi
 }
 
 apply_qt() {
@@ -192,7 +193,7 @@ apply_nvchad() {
 	done
 
 	lightdark=$(get_light_dark)
-	if [ "$lightdark" = "-l" ]; then
+	if [ "$lightdark" = "light" ]; then
 		sed -i "s/{{ \$colourtheme }}/light/g" "$HOME/.config/nvim/lua/custom/themes/ags_new.lua"
 	else
 		sed -i "s/{{ \$colourtheme }}/dark/g" "$HOME/.config/nvim/lua/custom/themes/ags_new.lua"
@@ -210,7 +211,7 @@ apply_ags() {
 apply_code() {
 	lightdark=$(get_light_dark)
 	echo light
-	if [ "$lightdark" = "-l" ]; then
+	if [ "$lightdark" = "light" ]; then
 		sed -i 's/"workbench.colorTheme": ".*"/"workbench.colorTheme": "Default Light Modern"/g' ~/.config/Code/User/settings.json
 	else
 		sed -i 's/"workbench.colorTheme": ".*"/"workbench.colorTheme": "Default Dark Modern"/g' ~/.config/Code/User/settings.json
@@ -221,7 +222,7 @@ apply_code() {
 apply_darkman() {
 	lightdark=$(get_light_dark)
 
-	if [ "$lightdark" = "-l" ]; then
+	if [ "$lightdark" = "light" ]; then
 		darkman set light
 	else
 		darkman set dark

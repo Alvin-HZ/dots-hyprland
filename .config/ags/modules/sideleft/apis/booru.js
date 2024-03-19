@@ -11,6 +11,7 @@ import { MaterialIcon } from '../../.commonwidgets/materialicon.js';
 import { MarginRevealer } from '../../.widgethacks/advancedrevealers.js';
 import { setupCursorHover, setupCursorHoverInfo } from '../../.widgetutils/cursorhover.js';
 import BooruService from '../../../services/booru.js';
+import { chatEntry } from '../apiwidgets.js';
 const Grid = Widget.subclass(Gtk.Grid, "AgsGrid");
 
 async function getImageViewerApp(preferredApp) {
@@ -354,6 +355,7 @@ export const booruView = Scrollable({
         // Always scroll to bottom with new content
         const adjustment = scrolledWindow.get_vadjustment();
         adjustment.connect("changed", () => {
+            if(!chatEntry.hasFocus) return;
             adjustment.set_value(adjustment.get_upper() - adjustment.get_page_size());
         })
     }
@@ -373,6 +375,7 @@ const booruTags = Revealer({
                 child: Box({
                     className: 'spacing-h-5',
                     children: [
+                        CommandButton('*'),
                         CommandButton('hololive'),
                     ]
                 })
