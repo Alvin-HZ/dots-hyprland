@@ -183,11 +183,10 @@ const CoverArt = ({ player, ...rest }) => {
 
                 
                 const coverPath = player.coverPath;
-                if (self.attribute.previousCoverPath == coverPath) {
+                if (self.attribute.previousCoverPath === coverPath) {
                     return;
                 }
                 self.attribute.previousCoverPath = coverPath;
-                console.log("asd here")
 
 
                 const stylePath = `${player.coverPath}${lightDark}${COVER_COLORSCHEME_SUFFIX}`;
@@ -326,9 +325,14 @@ const TrackTime = ({ player, ...rest }) => {
                 }),
                 Label({ label: '/' }),
                 Label({
+                    attribute: {
+                        'oldLength': -2
+                    },
                     setup: (self) => self.hook(Mpris, (self) => {
                         // const player = Mpris.getPlayer();
                         if (!player) return;
+                        if (self.attribute.oldLength === player.length) return;
+                        self.attribute.oldLength = player.length;
                         self.label = lengthStr(player.length);
                     }),
                 }),
