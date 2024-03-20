@@ -181,7 +181,15 @@ const CoverArt = ({ player, ...rest }) => {
                     return;
                 }
 
+                
                 const coverPath = player.coverPath;
+                if (self.attribute.previousCoverPath == coverPath) {
+                    return;
+                }
+                self.attribute.previousCoverPath = coverPath;
+                console.log("asd here")
+
+
                 const stylePath = `${player.coverPath}${lightDark}${COVER_COLORSCHEME_SUFFIX}`;
                 if (player.coverPath == lastCoverPath) { // Since 'notify::cover-path' emits on cover download complete
                     Utils.timeout(200, () => {
@@ -200,6 +208,7 @@ const CoverArt = ({ player, ...rest }) => {
                 }
 
                 // Generate colors
+
                 execAsync(['bash', '-c',
                     `${App.configDir}/scripts/color_generation/generate_colors_material.py --path '${coverPath}' --mode ${darkMode ? 'dark' : 'light'} > ${App.configDir}/scss/_musicmaterial.scss`])
                     .then(() => {
@@ -214,6 +223,7 @@ const CoverArt = ({ player, ...rest }) => {
                     })
                     .catch(print);
             },
+            'previousCoverPath': "",
         },
         setup: (self) => self
             .hook(player, (self) => {
