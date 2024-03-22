@@ -218,7 +218,7 @@ export default () => {
         child: Box({
             className: 'spacing-h-4',
             children: [
-                // SystemResourcesOrCustomModule(),
+                SystemResourcesOrCustomModule(),
                 BarGroup({ child: musicStuff }),
             ]
         })
