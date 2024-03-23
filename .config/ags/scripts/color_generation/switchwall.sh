@@ -27,4 +27,4 @@ else
 fi
 
 # Generate colors for ags n stuff
-"$HOME"/.config/ags/scripts/color_generation/colorgen.sh "${imgpath}" --apply
+"$HOME"/.config/ags/scripts/color_generation/colorgen.sh "${imgpath}" --apply --smart
