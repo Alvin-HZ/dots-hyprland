@@ -21,6 +21,8 @@ export const getDistroIcon = () => {
     if(distroID == 'cachyos') return 'cachyos-symbolic';
     // Funny flake
     if(distroID == 'nixos') return 'nixos-symbolic';
+    // Cool thing
+    if(distroID == 'fedora') return 'fedora-symbolic';
     // Debians
     if(distroID == 'linuxmint') return 'ubuntu-symbolic';
     if(distroID == 'ubuntu') return 'ubuntu-symbolic';
@@ -39,6 +41,8 @@ export const getDistroName = () => {
     if(distroID == 'cachyos') return 'CachyOS';
     // Funny flake
     if(distroID == 'nixos') return 'NixOS';
+    // Cool thing
+    if(distroID == 'fedora') return 'Fedora';
     // Debians
     if(distroID == 'linuxmint') return 'Linux Mint';
     if(distroID == 'ubuntu') return 'Ubuntu';
