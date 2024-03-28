@@ -300,11 +300,13 @@ $bar_ws_width_focus_active: 2.045rem;
 
 .corner {
     background-color: $layer0;
+    // background-color: black;
     @include large-rounding;
 }
 
 .corner-black {
-    background-color: $black; // Hard code: fake screen corner
+    // background-color: $black; // Hard code: fake screen corner
+    background-color: black;
     @include large-rounding;
 }
 
