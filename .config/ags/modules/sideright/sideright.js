@@ -18,6 +18,8 @@ import {
 } from "./quicktoggles.js";
 import ModuleNotificationList from "./centermodules/notificationlist.js";
 import ModuleVolumeMixer from "./centermodules/volumemixer.js";
+// import ModuleNetworks from "./centermodules/networks.js";
+import ModuleBluetooth from "./centermodules/bluetooth.js";
 import { ModuleCalendar } from "./calendar.js";
 import { getDistroIcon } from '../.miscutils/system.js';
 import { MaterialIcon } from '../.commonwidgets/materialicon.js';
@@ -34,6 +36,16 @@ const centerWidgets = [
         name: 'Volume mixer',
         materialIcon: 'volume_up',
         contentWidget: ModuleVolumeMixer(),
+    },
+    // {
+    //     name: 'Networks',
+    //     materialIcon: 'lan',
+    //     contentWidget: ModuleNetworks(),
+    // },
+    {
+        name: 'Bluetooth',
+        materialIcon: 'bluetooth',
+        contentWidget: ModuleBluetooth(),
     },
 ];
 
@@ -75,7 +87,7 @@ const togglesBox = Widget.Box({
         ToggleIconWifi(),
         ToggleIconBluetooth(),
         await ModuleRawInput(),
-        await HyprToggleIcon('front_hand', 'No touchpad while typing', 'input:touchpad:disable_while_typing', {}),
+        await HyprToggleIcon('touchpad_mouse', 'No touchpad while typing', 'input:touchpad:disable_while_typing', {}),
         ModuleNightLight(),
         ToggleDarkLightMode(),
         // await ModuleInvertColors(),

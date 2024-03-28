@@ -6,78 +6,89 @@ import Audio from 'resource:///com/github/Aylur/ags/service/audio.js';
 const { Box, Button, Icon, Label, Scrollable, Slider, Stack } = Widget;
 import { MaterialIcon } from '../../.commonwidgets/materialicon.js';
 import { setupCursorHover } from '../../.widgetutils/cursorhover.js';
-import { AnimatedSlider } from '../../.commonwidgets/cairo_slider.js';
+// import { AnimatedSlider } from '../../.commonwidgets/cairo_slider.js';
 
-const appVolume = (stream) => {
-    // console.log(stream)
-    return Box({
-        className: 'sidebar-volmixer-stream spacing-h-10',
-        children: [
-            Icon({
-                className: 'sidebar-volmixer-stream-appicon',
-                vpack: 'center',
-                tooltipText: stream.stream.name,
-                setup: (self) => {
-                    self.hook(stream, (self) => {
-                        self.icon = stream.stream.name.toLowerCase();
+const AppVolume = (stream) => Box({
+    className: 'sidebar-volmixer-stream spacing-h-10',
+    children: [
+        Icon({
+            className: 'sidebar-volmixer-stream-appicon',
+            vpack: 'center',
+            tooltipText: stream.stream.name,
+            setup: (self) => {
+                self.hook(stream, (self) => {
+                    self.icon = stream.stream.name.toLowerCase();
+                })
+            },
+        }),
+        Box({
+            hexpand: true,
+            vpack: 'center',
+            vertical: true,
+            className: 'spacing-v-5',
+            children: [
+                Label({
+                    xalign: 0,
+                    maxWidthChars: 10,
+                    truncate: 'end',
+                    label: stream.description,
+                    className: 'txt-small',
+                    setup: (self) => self.hook(stream, (self) => {
+                        self.label = `${stream.description}`
                     })
-                },
-            }),
-            Box({
-                hexpand: true,
-                vpack: 'center',
-                vertical: true,
-                className: 'spacing-v-5',
-                children: [
-                    Label({
-                        xalign: 0,
-                        maxWidthChars: 10,
-                        truncate: 'end',
-                        label: stream.description,
-                        className: 'txt-small',
-                        setup: (self) => {
-                            self.hook(stream, (self) => {
-                                self.label = `${stream.description}`
-                            })
-                        }
-                    }),
-                    Slider({
-                        drawValue: false,
-                        hpack: 'fill',
-                        className: 'sidebar-volmixer-stream-slider',
-                        value: stream.volume,
-                        min: 0, max: 1,
-                        onChange: ({ value }) => {
-                            stream.volume = value;
-                        },
-                        setup: (self) => {
-                            self.hook(stream, (self) => {
-                                self.value = stream.volume;
-                            })
-                        }
-                    }),
-                    // Box({
-                    //     homogeneous: true,
-                    //     className: 'test',
-                    //     children: [AnimatedSlider({
-                    //         className: 'sidebar-volmixer-stream-slider',
-                    //         value: stream.volume,
-                    //     })],
-                    // })
-                ]
-            })
-        ]
-    })
-}
+                }),
+                Slider({
+                    drawValue: false,
+                    hpack: 'fill',
+                    className: 'sidebar-volmixer-stream-slider',
+                    value: stream.volume,
+                    min: 0, max: 1,
+                    onChange: ({ value }) => {
+                        stream.volume = value;
+                    },
+                    setup: (self) => self.hook(stream, (self) => {
+                        self.value = stream.volume;
+                    })
+                }),
+                // Box({
+                //     homogeneous: true,
+                //     className: 'test',
+                //     children: [AnimatedSlider({
+                //         className: 'sidebar-volmixer-stream-slider',
+                //         value: stream.volume,
+                //     })],
+                // })
+            ]
+        })
+    ]
+});
 
 export default (props) => {
+    const emptyContent = Box({
+        homogeneous: true,
+        children: [Box({
+            vertical: true,
+            vpack: 'center',
+            className: 'txt spacing-v-10',
+            children: [
+                Box({
+                    vertical: true,
+                    className: 'spacing-v-5 txt-subtext',
+                    children: [
+                        MaterialIcon('brand_awareness', 'gigantic'),
+                        Label({ label: 'No audio source', className: 'txt-small' }),
+                    ]
+                }),
+            ]
+        })]
+    });
     const appList = Scrollable({
         vexpand: true,
         child: Box({
             attribute: {
                 'updateStreams': (self) => {
                     const streams = Audio.apps;
-                    self.children = streams.map(stream => appVolume(stream));
+                    self.children = streams.map(stream => AppVolume(stream));
                 },
             },
             vertical: true,
@@ -108,12 +119,21 @@ export default (props) => {
             })
         ]
     });
+    const mainContent = Stack({
+        children: {
+            'empty': emptyContent,
+            'list': appList,
+        },
+        setup: (self) => self.hook(Audio, (self) => {
+            self.shown = (Audio.apps.length > 0 ? 'list' : 'empty')
+        }),
+    })
     return Box({
         ...props,
         className: 'spacing-v-5',
         vertical: true,
         children: [
-            appList,
+            mainContent,
             status,
         ]
     });
