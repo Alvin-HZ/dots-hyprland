@@ -113,7 +113,16 @@ export const BarCornerTopleft = (monitor = 0) => Widget.Window({
     exclusivity: 'normal',
     visible: true,
     child: RoundedCorner('topleft', { className: 'corner', }),
-    setup: enableClickthrough,
+    setup: (self) => {
+        enableClickthrough(self);
+        self.hook(currentShellMode, (self) => {
+            if (currentShellMode.value === "normal") {
+                self.visible = true;
+            } else if (currentShellMode.value === "focus") {
+                self.visible = false;
+            }
+        })
+    }
 });
 export const BarCornerTopright = (monitor = 0) => Widget.Window({
     monitor,
@@ -123,5 +132,14 @@ export const BarCornerTopright = (monitor = 0) => Widget.Window({
     exclusivity: 'normal',
     visible: true,
     child: RoundedCorner('topright', { className: 'corner', }),
-    setup: enableClickthrough,
+    setup: (self) => {
+        enableClickthrough(self);
+        self.hook(currentShellMode, (self) => {
+            if (currentShellMode.value === "normal") {
+                self.visible = true;
+            } else if (currentShellMode.value === "focus") {
+                self.visible = false;
+            }
+        })
+    }
 });
