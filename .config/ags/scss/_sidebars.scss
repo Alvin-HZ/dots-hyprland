@@ -891,7 +891,8 @@ $waifu_image_overlay_transparency: 0.7;
 }
 
 .sidebar-bluetooth-appicon {
-    font-size: 3.273rem;
+    @include symbolic-icon;
+    font-size: 2.045rem;
 }
 
 .sidebar-bluetooth-device-remove {
@@ -907,4 +908,16 @@ $waifu_image_overlay_transparency: 0.7;
     @include full-rounding;
     background-color: $layer2Hover;
     padding: 0.341rem;
+}
+
+.sidebar-wifinetworks-network {
+    padding: 0.682rem;
+    @include normal-rounding;
+    background-color: $layer2;
+    color: $onLayer2;
+}
+
+.sidebar-wifinetworks-signal {
+    @include symbolic-icon;
+    font-size: 2.045rem;
 }

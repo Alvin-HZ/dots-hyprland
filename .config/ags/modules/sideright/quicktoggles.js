@@ -16,7 +16,7 @@ export const ToggleIconWifi = (props = {}) => Widget.Button({
     tooltipText: 'Wifi | Right-click to configure',
     onClicked: () => Network.toggleWifi(),
     onSecondaryClickRelease: () => {
-        execAsync(['bash', '-c', 'XDG_CURRENT_DESKTOP="gnome" gnome-control-center wifi', '&']);
+        execAsync(['bash', '-c', `${userOptions.apps.network}`, '&']);
         App.closeWindow('sideright');
     },
     child: NetworkIndicator(),
@@ -41,7 +41,7 @@ export const ToggleIconBluetooth = (props = {}) => Widget.Button({
             exec('rfkill unblock bluetooth');
     },
     onSecondaryClickRelease: () => {
-        execAsync(['bash', '-c', 'blueberry &']);
+        execAsync(['bash', '-c', `${userOptions.apps.bluetooth}`]).catch(print);
         App.closeWindow('sideright');
     },
     child: BluetoothIndicator(),
@@ -255,7 +255,7 @@ export const ModuleSettingsIcon = (props = {}) => Widget.Button({
     className: 'txt-small sidebar-iconbutton',
     tooltipText: 'Open Settings',
     onClicked: () => {
-        execAsync(['bash', '-c', 'XDG_CURRENT_DESKTOP="gnome" gnome-control-center', '&']);
+        execAsync(['bash', '-c', `${userOptions.apps.settings}`, '&']);
         App.toggleWindow('sideright');
     },
     child: MaterialIcon('settings', 'norm'),
