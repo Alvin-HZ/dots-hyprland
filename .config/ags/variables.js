@@ -28,3 +28,5 @@ globalThis['cycleMode'] = () => {
         currentShellMode.value = 'normal';
     }
 }
+
+export const sidebar_pinned = Variable(false, {})

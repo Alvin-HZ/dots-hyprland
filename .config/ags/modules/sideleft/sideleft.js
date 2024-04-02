@@ -12,6 +12,8 @@ import { chatEntry } from './apiwidgets.js';
 import { TabContainer } from '../.commonwidgets/tabcontainer.js';
 import { checkKeybind } from '../.widgetutils/keybind.js';
 
+import { sidebar_pinned } from '../../variables.js';
+
 const contents = [
     {
         name: 'tools',
@@ -38,6 +40,7 @@ const pinButton = Button({
             const sideleftContent = sideleftWindow.get_children()[0].get_children()[0].get_children()[1];
 
             sideleftContent.toggleClassName('sidebar-pinned', self.attribute.enabled);
+            sidebar_pinned.setValue(self.attribute.enabled);
 
             if (self.attribute.enabled) {
                 sideleftWindow.exclusivity = 'exclusive';

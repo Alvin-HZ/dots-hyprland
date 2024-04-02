@@ -1,18 +1,27 @@
 import App from 'resource:///com/github/Aylur/ags/app.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
+import { sidebar_pinned } from '../../variables.js';
+
 
 const Names = ["overview", "sideleft", "sideright", "cheatsheet"]
 
 const CloseWindows = () => {
     App.closeWindow("windowCloser")
     for (const name of Names) {
-        App.closeWindow(name)
+        if (name !== "sideleft") {
+            App.closeWindow(name)
+        }
+        console.log(sidebar_pinned.value)
+        if (!sidebar_pinned.value) {
+            App.closeWindow(name)
+        }
     }
 }
 
 const CheckIfOpen = () => {
     for (const name of Names) {
-        if (App.getWindow(name).visible) {
+        let window = App.getWindow(name);
+        if (window.visible) {
             return true
         }
     }
