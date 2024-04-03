@@ -2,7 +2,6 @@ import App from 'resource:///com/github/Aylur/ags/app.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import { sidebar_pinned } from '../../variables.js';
 
-
 const Names = ["overview", "sideleft", "sideright", "cheatsheet"]
 
 const CloseWindows = () => {
@@ -11,7 +10,7 @@ const CloseWindows = () => {
         if (name !== "sideleft") {
             App.closeWindow(name)
         }
-        console.log(sidebar_pinned.value)
+        console.log("Closing " + sidebar_pinned.value)
         if (!sidebar_pinned.value) {
             App.closeWindow(name)
         }
@@ -22,7 +21,13 @@ const CheckIfOpen = () => {
     for (const name of Names) {
         let window = App.getWindow(name);
         if (window.visible) {
-            return true
+            if (name !== "sideleft") {
+                return true
+            }
+            console.log("Check open " + sidebar_pinned.value)
+            if (!sidebar_pinned.value) {
+                return true
+            }
         }
     }
     return false
@@ -34,8 +39,12 @@ const ClickToClose = ({ ...props }) => Widget.EventBox({
     onSecondaryClick: CloseWindows,
     onMiddleClick: CloseWindows,
     
-    setup: (self) => self.hook(App, (self, name, visible) => { // Update on open
+    setup: (self) => {
+        self.hook(App, (self, name, visible) => { // Update on open
             if (Names.includes(name)) {
+                if (name === "sideleft" && sidebar_pinned.value) {
+                    return
+                }
                 if (visible) {
                     App.openWindow('windowCloser')
                 } else {
@@ -46,6 +55,7 @@ const ClickToClose = ({ ...props }) => Widget.EventBox({
                 }
             }
         }, 'window-toggled')
+    },
 });
 
 export const Closer = () => ClickToClose({

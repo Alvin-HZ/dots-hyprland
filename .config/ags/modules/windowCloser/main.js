@@ -1,5 +1,6 @@
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import { Closer } from "./windowcloser.js";
+import { enableClickthrough } from "../.widgetutils/clickthrough.js";
 
 export default () => Widget.Window({
     name: 'windowCloser',
