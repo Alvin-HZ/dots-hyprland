@@ -1,10 +1,7 @@
-// TODO: execAsync(['identify', '-format', '{"w":%w,"h":%h}', imagePath])
-// to detect img dimensions
-
 const { Gdk, GdkPixbuf, Gio, GLib, Gtk } = imports.gi;
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
-const { Box, Button, Label, Overlay, Revealer, Scrollable, Stack } = Widget;
+const { Box, Button, EventBox, Label, Overlay, Revealer, Scrollable, Stack } = Widget;
 const { execAsync, exec } = Utils;
 import { fileExists } from '../../.miscutils/files.js';
 import { MaterialIcon } from '../../.commonwidgets/materialicon.js';
@@ -13,15 +10,7 @@ import { setupCursorHover, setupCursorHoverInfo } from '../../.widgetutils/curso
 import BooruService from '../../../services/booru.js';
 import { chatEntry } from '../apiwidgets.js';
 import { ConfigToggle } from '../../.commonwidgets/configwidgets.js';
-const Grid = Widget.subclass(Gtk.Grid, "AgsGrid");
-
-async function getImageViewerApp(preferredApp) {
-    Utils.execAsync(['bash', '-c', `command -v ${preferredApp}`])
-        .then((output) => {
-            if (output != '') return preferredApp;
-            else return 'xdg-open';
-        });
-}
+import { SystemMessage } from './ai_chatmessage.js';
 
 const IMAGE_REVEAL_DELAY = 13; // Some wait for inits n other weird stuff
 const USER_CACHE_DIR = GLib.get_user_cache_dir();
@@ -71,7 +60,7 @@ const BooruInfo = () => {
                         className: 'txt-smallie txt-subtext',
                         wrap: true,
                         justify: Gtk.Justification.CENTER,
-                        label: 'Powered by yande.re',
+                        label: 'Powered by yande.re and konachan',
                     }),
                     Button({
                         className: 'txt-subtext txt-norm icon-material',
@@ -108,6 +97,9 @@ export const BooruSettings = () => MarginRevealer({
                         onChange: (self, newValue) => {
                             BooruService.nsfw = newValue;
                         },
+                        extraSetup: (self) => self.hook(BooruService, (self) => {
+                            self.attribute.enabled.value = BooruService.nsfw;
+                        }, 'notify::nsfw')
                     }),
                 ]
             })
@@ -129,7 +121,7 @@ const booruWelcome = Box({
     })
 });
 
-const BooruPage = (taglist) => {
+const BooruPage = (taglist, serviceName = 'Booru') => {
     const PageState = (icon, name) => Box({
         className: 'spacing-h-5 txt',
         children: [
@@ -160,26 +152,11 @@ const BooruPage = (taglist) => {
                     const imagePath = `${USER_CACHE_DIR}/ags/media/waifus/${data.md5}.${data.file_ext}`;
                     const widgetStyleContext = imageArea.get_style_context();
                     const widgetWidth = widgetStyleContext.get_property('min-width', Gtk.StateFlags.NORMAL);
-                    const widgetHeight = widgetStyleContext.get_property('min-height', Gtk.StateFlags.NORMAL);
+                    const widgetHeight = widgetWidth / data.aspect_ratio;
                     imageArea.set_size_request(widgetWidth, widgetHeight);
                     const showImage = () => {
-                        const imageDimensionsStr = exec(`identify -format {\\"w\\":%w,\\"h\\":%h} '${imagePath}'`)
-                        const imageDimensionsJson = JSON.parse(imageDimensionsStr);
-                        let imageWidth = imageDimensionsJson.w;
-                        let imageHeight = imageDimensionsJson.h;
-
-                        // Fill
-                        const scale = imageWidth / imageHeight;
-                        if (imageWidth > imageHeight) {
-                            imageWidth = widgetHeight * scale;
-                            imageHeight = widgetHeight;
-                        } else {
-                            imageHeight = widgetWidth / scale;
-                            imageWidth = widgetWidth;
-                        }
-
                         // const pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(imagePath, widgetWidth, widgetHeight);
-                        const pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(imagePath, imageWidth, imageHeight, false);
+                        const pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(imagePath, widgetWidth, widgetHeight, false);
                         imageArea.connect("draw", (widget, cr) => {
                             const borderRadius = widget.get_style_context().get_property('border-radius', Gtk.StateFlags.NORMAL);
 
@@ -192,10 +169,11 @@ const BooruPage = (taglist) => {
                             cr.clip();
 
                             // Paint image as bg
-                            Gdk.cairo_set_source_pixbuf(cr, pixbuf, (widgetWidth - imageWidth) / 2, (widgetHeight - imageHeight) / 2);
+                            Gdk.cairo_set_source_pixbuf(cr, pixbuf, (widgetWidth - widgetWidth) / 2, (widgetHeight - widgetHeight) / 2);
                             cr.paint();
                         });
                         self.queue_draw();
+                        imageRevealer.revealChild = true;
                     }
                     // Show
                     // const downloadCommand = `wget -O '${imagePath}' '${data.preview_url}'`;
@@ -213,31 +191,33 @@ const BooruPage = (taglist) => {
                 Utils.timeout(1000, () => self.attribute.update(self, data));
             }
         });
-        const imageActions = Box({
-            vpack: 'start',
-            className: 'sidebar-booru-image-actions spacing-h-3',
-            children: [
-                Box({ hexpand: true }),
-                ImageAction({
-                    name: 'Go to file url',
-                    icon: 'file_open',
-                    action: () => execAsync(['xdg-open', `${data.file_url}`]).catch(print),
-                }),
-                ImageAction({
-                    name: 'Go to source',
-                    icon: 'open_in_new',
-                    action: () => execAsync(['xdg-open', `${data.source}`]).catch(print),
-                }),
-            ]
+        const imageActions = Revealer({
+            transition: 'crossfade',
+            transitionDuration: userOptions.animations.durationLarge,
+            child: Box({
+                vpack: 'start',
+                className: 'sidebar-booru-image-actions spacing-h-3',
+                children: [
+                    Box({ hexpand: true }),
+                    ImageAction({
+                        name: 'Go to file url',
+                        icon: 'file_open',
+                        action: () => execAsync(['xdg-open', `${data.file_url}`]).catch(print),
+                    }),
+                    ImageAction({
+                        name: 'Go to source',
+                        icon: 'open_in_new',
+                        action: () => execAsync(['xdg-open', `${data.source}`]).catch(print),
+                    }),
+                ]
+            })
         });
-        return Overlay({
+        const imageOverlay = Overlay({
+            passThrough: true,
             child: imageBox,
             overlays: [imageActions]
         })
     }
-    const colorIndicator = Box({
-        className: `sidebar-chat-indicator`,
-    });
     const downloadState = Stack({
         homogeneous: false,
         transition: 'slide_up_down',
@@ -256,62 +236,92 @@ const BooruPage = (taglist) => {
         child: downloadState,
     });
     const pageHeading = Box({
-        homogeneous: false,
+        vertical: true,
         children: [
-            Scrollable({
-                hexpand: true,
-                vscroll: 'never',
-                hscroll: 'automatic',
-                child: Box({
-                    hpack: 'fill',
-                    className: 'sidebar-waifu-content spacing-h-5',
-                    children: [
-                        ...taglist.map((tag) => CommandButton(tag)),
-                        Box({ hexpand: true }),
-                    ]
-                })
+            Box({
+                children: [
+                    Label({
+                        hpack: 'start',
+                        className: `sidebar-booru-provider`,
+                        label: `${serviceName}`,
+                        truncate: 'end',
+                        maxWidthChars: 20,
+                    }),
+                    Box({ hexpand: true }),
+                    downloadIndicator,
+                ]
             }),
-            downloadIndicator,
+            Box({
+                children: [
+                    Scrollable({
+                        hexpand: true,
+                        vscroll: 'never',
+                        hscroll: 'automatic',
+                        child: Box({
+                            hpack: 'fill',
+                            className: 'spacing-h-5',
+                            children: [
+                                ...taglist.map((tag) => CommandButton(tag)),
+                                Box({ hexpand: true }),
+                            ]
+                        })
+                    }),
+                ]
+            })
         ]
     });
-    const pageImageGrid = Grid({
-        // columnHomogeneous: true,
-        // rowHomogeneous: true,
-        className: 'sidebar-waifu-image',
-        // css: 'min-height: 90px;'
-    });
+    const pageImages = Box({
+        homogeneous: true,
+        className: 'sidebar-booru-imagegrid',
+    })
     const pageImageRevealer = Revealer({
         transition: 'slide_down',
         transitionDuration: userOptions.animations.durationLarge,
         revealChild: false,
-        child: pageImageGrid,
+        child: pageImages,
     });
     const thisPage = Box({
         className: 'sidebar-chat-message',
         attribute: {
             'imagePath': '',
             'isNsfw': false,
-            'imageData': '',
-            'update': (data, force = false) => {
-                const imageData = data;
-                thisPage.attribute.imageData = imageData;
+            'update': (data, force = false) => { // TODO: Use columns. Sort min to max h/w ratio then greedily put em in...
+                // Sort by .aspect_ratio
+                data = data.sort(
+                    (a, b) => a.aspect_ratio - b.aspect_ratio
+                );
                 if (data.length == 0) {
                     downloadState.shown = 'error';
                     return;
                 }
                 const imageColumns = userOptions.sidebar.imageColumns;
                 const imageRows = data.length / imageColumns;
-                // Add stuff
-                for (let i = 0; i < imageRows; i++) {
+
+                // Init cols
+                pageImages.children = Array.from(
+                    { length: imageColumns },
+                    (_, i) => Box({
+                        attribute: { height: 0 },
+                        vertical: true,
+                    })
+                );
+                // Greedy add O(n^2) 😭
+                for (let i = 0; i < data.length; i++) {
+                    // Find column with lowest length
+                    let minHeight = Infinity;
+                    let minIndex = -1;
                     for (let j = 0; j < imageColumns; j++) {
-                        if (i * imageColumns + j >= Math.min(userOptions.sidebar.imageBooruCount, data.length)) break;
-                        pageImageGrid.attach(
-                            PreviewImage(data[i * imageColumns + j]),
-                            j, i, 1, 1
-                        );
+                        const height = pageImages.children[j].attribute.height;
+                        if (height < minHeight) {
+                            minHeight = height;
+                            minIndex = j;
+                        }
                     }
+                    // Add image to it
+                    pageImages.children[minIndex].pack_start(PreviewImage(data[i], minIndex), false, false, 0)
+                    pageImages.children[minIndex].attribute.height += 1 / data[i].aspect_ratio; // we want height/width
                 }
-                pageImageGrid.show_all();
+                pageImages.show_all();
 
                 // Reveal stuff
                 Utils.timeout(IMAGE_REVEAL_DELAY,
@@ -347,17 +357,15 @@ const booruContent = Box({
     setup: (self) => self
         .hook(BooruService, (box, id) => {
             if (id === undefined) return;
-            const newPage = BooruPage(BooruService.queries[id]);
+            const newPage = BooruPage(BooruService.queries[id].taglist, BooruService.queries[id].providerName);
             box.add(newPage);
             box.show_all();
             box.attribute.map.set(id, newPage);
         }, 'newResponse')
         .hook(BooruService, (box, id) => {
             if (id === undefined) return;
-            const data = BooruService.responses[id];
-            if (!data) return;
-            const page = box.attribute.map.get(id);
-            page?.attribute.update(data);
+            if (!BooruService.responses[id]) return;
+            box.attribute.map.get(id)?.attribute.update(BooruService.responses[id]);
         }, 'updateResponse')
     ,
 });
@@ -382,7 +390,7 @@ export const booruView = Scrollable({
             const viewport = scrolledWindow.child;
             viewport.set_focus_vadjustment(new Gtk.Adjustment(undefined));
         })
-        // Always scroll to bottom with new content
+        // Scroll to bottom with new content if chat entry not focused
         const adjustment = scrolledWindow.get_vadjustment();
         adjustment.connect("changed", () => {
             if (!chatEntry.hasFocus) return;
@@ -442,6 +450,28 @@ export const sendMessage = (text) => {
     // Commands
     if (text.startsWith('/')) {
         if (text.startsWith('/clear')) clearChat();
+        else if (text.startsWith('/safe')) {
+            BooruService.nsfw = false;
+            const message = SystemMessage(`Switched to safe mode`, '/safe', booruView)
+            booruContent.add(message);
+            booruContent.show_all();
+            booruContent.attribute.map.set(Date.now(), message);
+        }
+        else if (text.startsWith('/lewd')) {
+            BooruService.nsfw = true;
+            const message = SystemMessage(`Tiddies enabled`, '/lewd', booruView)
+            booruContent.add(message);
+            booruContent.show_all();
+            booruContent.attribute.map.set(Date.now(), message);
+        }
+        else if (text.startsWith('/mode')) {
+            const mode = text.slice(text.indexOf(' ') + 1);
+            BooruService.mode = mode;
+            const message = SystemMessage(`Changed provider to ${BooruService.providerName}`, '/mode', booruView)
+            booruContent.add(message);
+            booruContent.show_all();
+            booruContent.attribute.map.set(Date.now(), message);
+        }
     }
     else BooruService.fetch(text);
 }
