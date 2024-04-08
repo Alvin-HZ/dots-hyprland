@@ -63,7 +63,7 @@ const Windows = () => [
     forMonitors((id) => Corner(id, 'bottom right')),
     forMonitors(BarCornerTopleft),
     forMonitors(BarCornerTopright),
-    forMonitors(Click2Close),
+    // forMonitors(Click2Close),
 ];
 
 const CLOSE_ANIM_TIME = 210; // Longer than actual anim time to make sure widgets animate fully
