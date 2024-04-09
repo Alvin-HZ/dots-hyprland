@@ -10,14 +10,14 @@ import { BluetoothIndicator, NetworkIndicator } from '../.commonwidgets/statusic
 import { setupCursorHover } from '../.widgetutils/cursorhover.js';
 import { MaterialIcon } from '../.commonwidgets/materialicon.js';
 import { darkMode } from '../.miscutils/system.js';
+import { sidebarOptionsStack } from './sideright.js';
 
 export const ToggleIconWifi = (props = {}) => Widget.Button({
     className: 'txt-small sidebar-iconbutton',
     tooltipText: 'Wifi | Right-click to configure',
     onClicked: () => Network.toggleWifi(),
-    onSecondaryClickRelease: () => {
-        execAsync(['bash', '-c', `${userOptions.apps.network}`, '&']);
-        App.closeWindow('sideright');
+    onSecondaryClick: () => {
+        sidebarOptionsStack.focusName('Wifi networks')
     },
     child: NetworkIndicator(),
     setup: (self) => {
@@ -42,7 +42,7 @@ export const ToggleIconBluetooth = (props = {}) => Widget.Button({
     },
     onSecondaryClickRelease: () => {
         execAsync(['bash', '-c', `${userOptions.apps.bluetooth}`]).catch(print);
-        App.closeWindow('sideright');
+        closeEverything();
     },
     child: BluetoothIndicator(),
     setup: (self) => {
@@ -269,8 +269,8 @@ export const ModulePowerIcon = (props = {}) => Widget.Button({
     className: 'txt-small sidebar-iconbutton',
     tooltipText: 'Session',
     onClicked: () => {
-        App.toggleWindow('session');
-        App.closeWindow('sideright');
+        closeEverything();
+        Utils.timeout(1, () => App.openWindow('session'));
     },
     child: MaterialIcon('power_settings_new', 'norm'),
     setup: button => {
