@@ -228,7 +228,7 @@ export const ModuleEditIcon = (props = {}) => Widget.Button({ // TODO: Make this
     className: 'txt-small sidebar-iconbutton',
     onClicked: () => {
         execAsync(['bash', '-c', 'XDG_CURRENT_DESKTOP="gnome" gnome-control-center', '&']);
-        App.toggleWindow('sideright');
+        App.closeWindow('sideright');
     },
     child: MaterialIcon('edit', 'norm'),
     setup: button => {
@@ -242,7 +242,7 @@ export const ModuleReloadIcon = (props = {}) => Widget.Button({
     tooltipText: 'Reload Environment config',
     onClicked: () => {
         execAsync(['bash', '-c', 'hyprctl reload || swaymsg reload &']);
-        App.toggleWindow('sideright');
+        App.closeWindow('sideright');
     },
     child: MaterialIcon('refresh', 'norm'),
     setup: button => {
@@ -256,7 +256,7 @@ export const ModuleSettingsIcon = (props = {}) => Widget.Button({
     tooltipText: 'Open Settings',
     onClicked: () => {
         execAsync(['bash', '-c', `${userOptions.apps.settings}`, '&']);
-        App.toggleWindow('sideright');
+        App.closeWindow('sideright');
     },
     child: MaterialIcon('settings', 'norm'),
     setup: button => {
