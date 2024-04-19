@@ -1,34 +1,58 @@
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
-import { periodicTable, series } from "./data_periodictable.js";
-const { Box, Button, Label, Revealer } = Widget;
+import { niceTypes, periodicTable, series } from "./data_periodictable.js";
+const { Box, Button, Icon, Label, Revealer } = Widget;
 
 export default () => {
     const ElementTile = (element) => {
         return Box({
             vertical: true,
-            className: (element.name == '' ? 'cheatsheet-periodictable-empty' : 'cheatsheet-periodictable-element'),
+            tooltipText: element.electronConfig ? `${element.electronConfig}` : null,
+            className: `cheatsheet-periodictable-${element.type}`,
             children: element.name == '' ? null : [
                 Box({
-                    className: 'padding-8',
+                    className: 'padding-left-8 padding-right-8 padding-top-8',
                     children: [
                         Label({
                             label: `${element.number}`,
-                            className: "txt txt-tiny",
+                            className: "cheatsheet-periodictable-elementnum txt-tiny txt-bold",
                         }),
                         Box({ hexpand: true }),
                         Label({
                             label: `${element.weight}`,
-                            className: "txt txt-smaller",
+                            className: "txt-smaller",
                         })
                     ]
                 }),
-                Label({
+                element.icon ? Icon({
+                    icon: element.icon,
+                    className: "txt-hugerass txt-bold",
+                }) : Label({
                     label: `${element.symbol}`,
-                    className: "txt txt-large txt-bold",
+                    className: "cheatsheet-periodictable-elementsymbol",
+                }),
+                Label({
+                    label: `${element.name}`,
+                    className: "txt-tiny",
                 })
             ]
         })
     }
+    const BoardColor = (type) => Box({
+        className: 'spacing-h-5',
+        children: [
+            Box({
+                homogeneous: true,
+                className: `cheatsheet-periodictable-legend-color-wrapper`,
+                children: [Box({
+                    className: `cheatsheet-periodictable-legend-color-${type}`,
+                })]
+            }),
+            Label({
+                label: `${niceTypes[type]}`,
+                className: "txt txt-small",
+            })
+        ]
+    })
     const mainBoard = Box({
         hpack: 'center',
         vertical: true,
@@ -47,12 +71,24 @@ export default () => {
             children: row.map((element, _) => ElementTile(element))
         })),
     });
+    const legend = Box({
+        hpack: 'center',
+        className: 'spacing-h-20',
+        children: [
+            BoardColor('metal'),
+            BoardColor('nonmetal'),
+            BoardColor('noblegas'),
+            BoardColor('lanthanum'),
+            BoardColor('actinium'),
+        ]
+    })
     return Box({
         vertical: true,
         className: 'spacing-v-20',
         children: [
             mainBoard,
-            seriesBoard
+            seriesBoard,
+            legend
         ]
     })
 }
