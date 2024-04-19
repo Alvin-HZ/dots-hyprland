@@ -82,7 +82,7 @@ let userConfigOptions = {
         },
     },
     'dock': {
-        'enabled': true,
+        'enabled': false,
         'hiddenThickness': 5,
         'pinnedApps': ['brave','foot'],
         'layer': 'top',
