@@ -252,6 +252,7 @@ apply_gtk &
 apply_fuzzel &
 apply_term &
 apply_kitty &
+apply_qt & 
 # apply_nvchad &
 apply_darkman &
 apply_code &
