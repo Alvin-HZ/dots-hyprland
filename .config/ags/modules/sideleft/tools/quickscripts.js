@@ -35,18 +35,19 @@ const scripts = [
         command: `sudo dnf upgrade -y`,
         enabled: distroID == 'fedora',
     },
-    {
-        icon: 'arch-symbolic',
-        name: 'Update packages',
-        command: `sudo pacman -Syyu`,
-        enabled: isArchDistro,
-    },
-    {
-        icon: 'flatpak-symbolic',
-        name: 'Uninstall unused flatpak packages',
-        command: `flatpak uninstall --unused`,
-        enabled: hasFlatpak,
-    },
+    /* Replaced arch script with my own */
+    // {
+    //     icon: 'arch-symbolic',
+    //     name: 'Update packages',
+    //     command: `sudo pacman -Syyu`,
+    //     enabled: isArchDistro,
+    // },
+    // {
+    //     icon: 'flatpak-symbolic',
+    //     name: 'Uninstall unused flatpak packages',
+    //     command: `flatpak uninstall --unused`,
+    //     enabled: hasFlatpak,
+    // },
 ];
 
 export default () => SidebarModule({

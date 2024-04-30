@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-############ Variables ############
+# ########### Variables ############
 enable_battery=false
 battery_charging=false
 
-####### Check availability ########
+# ###### Check availability ########
 for battery in /sys/class/power_supply/*BAT*; do
   if [[ -f "$battery/uevent" ]]; then
     enable_battery=true
@@ -15,7 +15,7 @@ for battery in /sys/class/power_supply/*BAT*; do
   fi
 done
 
-############# Output #############
+# ############ Output #############
 if [[ $enable_battery == true ]]; then
   if [[ $battery_charging == true ]]; then
     echo -n "(+) "

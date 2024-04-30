@@ -14,16 +14,16 @@ import { checkKeybind } from '../.widgetutils/keybind.js';
 
 const contents = [
     {
-        name: 'apis',
-        content: apiWidgets,
-        materialIcon: 'api',
-        friendlyName: 'APIs',
-    },
-    {
         name: 'tools',
         content: toolBox,
         materialIcon: 'home_repair_service',
         friendlyName: 'Tools',
+    },
+    {
+        name: 'apis',
+        content: apiWidgets,
+        materialIcon: 'api',
+        friendlyName: 'APIs',
     },
 ]
 
