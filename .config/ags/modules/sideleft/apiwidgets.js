@@ -36,22 +36,6 @@ const APIS = [
         tabIcon: chatGPTTabIcon,
         placeholderText: 'Message the model...',
     },
-    {
-        name: 'Waifus',
-        sendCommand: waifuSendMessage,
-        contentWidget: waifuView,
-        commandBar: waifuCommands,
-        tabIcon: waifuTabIcon,
-        placeholderText: 'Enter tags',
-    },
-    {
-        name: 'Booru',
-        sendCommand: booruSendMessage,
-        contentWidget: booruView,
-        commandBar: booruCommands,
-        tabIcon: booruTabIcon,
-        placeholderText: 'Enter tags',
-    },
 ];
 let currentApiId = 0;
 
