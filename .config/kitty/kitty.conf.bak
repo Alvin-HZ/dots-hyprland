@@ -6,8 +6,10 @@ bold_italic_font auto
 font_size 9.0
 window_padding_width 25
 include themes/theme.conf
-#background_opacity 0.60
-#hide_window_decorations yes
+background_opacity 1.00
+background_tint 0.2
+dynamic_background_opacity yes
+background_blur 1
 #confirm_os_window_close 0
 
 enable_audio_bell no
@@ -19,3 +21,8 @@ visual_bell_duration 0.01
 # ags
 include current-theme.conf
 # END_KITTY_THEME
+
+map ctrl+shift+m set_background_opacity +0.1
+map ctrl+shift+l set_background_opacity -0.1
+map ctrl+shift+1 set_background_opacity 0.6
+map ctrl+v paste_from_clipboard 
