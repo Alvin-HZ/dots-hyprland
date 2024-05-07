@@ -80,6 +80,24 @@ apply_term() {
 	done
 }
 
+apply_kitty() {
+	# Check if scripts/templates/hypr/colors.conf exists
+	if [ ! -f "scripts/templates/kitty/theme.conf" ]; then
+		echo "Template file not found for Hyprland colors. Skipping that."
+		return
+	fi
+	# Copy template
+	mkdir "$HOME/.config/kitty/themes/"
+	cp "scripts/templates/kitty/theme.conf" "$HOME/.config/kitty/themes/theme_new.conf"
+	# Apply colors
+	for i in "${!colorlist[@]}"; do
+		sed -i "s/{{ ${colorlist[$i]} }}/${colorvalues[$i]#\#}/g" "$HOME/.config/kitty/themes/theme_new.conf"
+	done
+
+	mv "$HOME/.config/kitty/themes/theme_new.conf" "$HOME/.config/kitty/themes/theme.conf"
+	kitten themes --reload-in=all ags
+}
+
 apply_hyprland() {
 	# Check if scripts/templates/hypr/hyprland/colors.conf exists
 	if [ ! -f "scripts/templates/hypr/hyprland/colors.conf" ]; then
@@ -234,6 +252,7 @@ apply_hyprlock &
 apply_gtk &
 apply_fuzzel &
 apply_term &
+apply_kitty &
 apply_qt &
 # apply_nvchad &
 apply_darkman &
