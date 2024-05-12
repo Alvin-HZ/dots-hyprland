@@ -37,6 +37,7 @@ let configOptions = {
         'warnLevels': [20, 15, 5],
         'warnTitles': ["Low battery", "Very low battery", 'Critical Battery'],
         'warnMessages': ["Plug in the charger", "You there?", 'PLUG THE CHARGER ALREADY'],
+        'suspendThreshold': 3,
     },
     'brightness': {
         // Object of controller names for each monitor, either "brightnessctl" or "ddcutil" or "auto"
@@ -124,7 +125,13 @@ let configOptions = {
             'wps': "wps-office2019-kprometheus",
             'wpsoffice': "wps-office2019-kprometheus",
             '': "image-missing",
-        }
+        },
+        regexSubstitutions: [
+            {
+                regex: /^steam_app_(\d+)$/,
+                replace: "steam_icon_$1",
+            }
+        ]
     },
     'keybinds': {
         // Format: Mod1+Mod2+key. CaSe SeNsItIvE!
