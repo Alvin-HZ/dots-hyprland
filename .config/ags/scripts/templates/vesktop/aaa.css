@@ -1,0 +1,34 @@
+/**
+ * @name hyprdots
+ * @version 1.0.0
+ * @description hyprdots generated theme
+*/
+:root:root {
+    --primary-100: rgb(0,0,0); 
+    --primary-130: rgb(0,0,0); /* usernames */
+    --primary-160: rgb(0,0,0); 
+    --primary-200: rgb(0,0,0); 
+    --primary-230: rgb(0,0,0); /* message text */
+    --primary-260: rgb(0,0,0); 
+    --primary-300: rgb(0,0,0); 
+    --primary-330: rgb(0,0,0); /* icons for actions (upload, react, etc.) */
+    --primary-345: rgb(0,0,0); 
+    --primary-360: rgb(0,0,0); /* Channel names, message dates, member text */
+    --primary-400: rgb(0,0,0); /* channel icons and stuff */ 
+    --primary-430: rgb(0,0,0); /* message box placeholder text */
+    --primary-460: rgb(0,0,0); 
+    --primary-500: rgb(0,0,0); /* muted channel text */
+    --primary-530: rgb(0,0,0); 
+    --primary-560: rgb(0,0,0); /* message box */
+    --primary-600: rgb(0,0,0); /* main channel background */
+    --primary-630: rgb(0,0,0); /* channel menu & member menu */
+    --primary-645: rgb(0,0,0); 
+    --primary-660: rgb(0,0,0); /* menu at bottom of channel menu */
+    --primary-700: rgb(0,0,0); /* side bar */
+    --primary-730: rgb(0,0,0); /* scroll bar */
+    --primary-760: rgb(0,0,0); 
+    --primary-800: rgb(0,0,0); /* Right click menus */
+    --primary-830: rgb(0,0,0); 
+    --primary-860: rgb(0,0,0); 
+    --primary-900: rgb(0,0,0); 
+}

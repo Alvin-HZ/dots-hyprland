@@ -1,0 +1,21 @@
+/**
+ * @name hyprdots
+ * @version 1.0.0
+ * @description hyprdots generated theme
+*/
+:root:root {
+    --primary-130: #{$onSecondaryContainer}; /* usernames */
+    --primary-230: #{$onSurface}; /* message text */
+    --primary-330: #{$outlineVariant}; /* icons for actions (upload, react, etc.) */
+    --primary-360: #{$onSecondaryContainer}; /* Channel names, message dates, member text */
+    --primary-400: #{$onSecondaryContainer}; /* channel icons and stuff */ 
+    --primary-430: #{$surfaceDim}; /* message box placeholder text */
+    --primary-500: #{$surfaceDim}; /* muted channel text */
+    --primary-560: #{$surfaceContainerLowest}; /* message box */
+    --primary-600: #{$surface}; /* main channel background */
+    --primary-630: #{$surfaceContainerHigh}; /* channel menu & member menu */
+    --primary-660: #{$surfaceContainer}; /* menu at bottom of channel menu */
+    --primary-700: #{$surfaceContainerHighest}; /* side bar */
+    --primary-730: #{$surfaceDim}; /* scroll bar */
+    --primary-800: #{$tertiaryContainer}; /* Right click menus */
+}
