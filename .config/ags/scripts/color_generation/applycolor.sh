@@ -1,19 +1,26 @@
 #!/usr/bin/env bash
 
+XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+CONFIG_DIR="$XDG_CONFIG_HOME/ags"
+CACHE_DIR="$XDG_CACHE_HOME/ags"
+STATE_DIR="$XDG_STATE_HOME/ags"
+
 term_alpha=100 #Set this to < 100 make all your terminals transparent
 # sleep 0 # idk i wanted some delay or colors dont get applied properly
-if [ ! -d "$HOME"/.cache/ags/user/generated ]; then
-	mkdir -p "$HOME"/.cache/ags/user/generated
+if [ ! -d "$CACHE_DIR"/user/generated ]; then
+    mkdir -p "$CACHE_DIR"/user/generated
 fi
-cd "$HOME/.config/ags" || exit
+cd "$CONFIG_DIR" || exit
 
 colornames=''
 colorstrings=''
 colorlist=()
 colorvalues=()
 
-# wallpath=$(swww query | awk -F 'image: ' '{print $2}')
-# wallpath_png="$HOME"'/.cache/ags/user/generated/hypr/lockscreen.png'
+# wallpath=$(swww query | head -1 | awk -F 'image: ' '{print $2}')
+# wallpath_png="$CACHE_DIR/user/generated/hypr/lockscreen.png"
 # convert "$wallpath" "$wallpath_png"
 # wallpath_png=$(echo "$wallpath_png" | sed 's/\//\\\//g')
 # wallpath_png=$(sed 's/\//\\\\\//g' <<< "$wallpath_png")
@@ -136,17 +143,17 @@ apply_hyprlock() {
 apply_gtk() { # Using gradience-cli
 	lightdark=$(get_light_dark)
 
-	# Copy template
-	mkdir -p "$HOME"/.cache/ags/user/generated/gradience
-	cp "scripts/templates/gradience/preset.json" "$HOME"/.cache/ags/user/generated/gradience/preset.json
+    # Copy template
+    mkdir -p "$CACHE_DIR"/user/generated/gradience
+    cp "scripts/templates/gradience/preset.json" "$CACHE_DIR"/user/generated/gradience/preset.json
 
-	# Apply colors
-	for i in "${!colorlist[@]}"; do
-		sed -i "s/{{ ${colorlist[$i]} }}/${colorvalues[$i]}/g" "$HOME"/.cache/ags/user/generated/gradience/preset.json
-	done
+    # Apply colors
+    for i in "${!colorlist[@]}"; do
+        sed -i "s/{{ ${colorlist[$i]} }}/${colorvalues[$i]}/g" "$CACHE_DIR"/user/generated/gradience/preset.json
+    done
 
-	mkdir -p "$HOME/.config/presets" # create gradience presets folder
-	gradience-cli apply -p "$HOME"/.cache/ags/user/generated/gradience/preset.json --gtk both
+    mkdir -p "$XDG_CONFIG_HOME/presets" # create gradience presets folder
+    gradience-cli apply -p "$CACHE_DIR"/user/generated/gradience/preset.json --gtk both
 
 	# Set light/dark preference
 	# And set GTK theme manually as Gradience defaults to light adw-gtk3
