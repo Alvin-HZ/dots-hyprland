@@ -61,7 +61,7 @@ export default (overviewMonitor = 0) => {
         if (y + h <= 0) x += (Math.floor(y / monitors[monitor].height) * monitors[monitor].height);
         else if (y < 0) { h = y + h; y = 0; }
         // Truncate if offscreen
-        if (x + w > monitors[monitor]) w = monitors[monitor] - x;
+        if (x + w > monitors[monitor].width) w = monitors[monitor].width - x;
         if (y + h > monitors[monitor].height) h = monitors[monitor].height - y;
 
         const iconName = substitute(c);
@@ -133,25 +133,25 @@ export default (overviewMonitor = 0) => {
                     children: [
                         appIcon,
                         // TODO: Add xwayland tag instead of just having italics
-                        // Widget.Revealer({
-                        //     transition: 'slide_right',
-                        //     revealChild: revealInfoCondition,
-                        //     child: Widget.Revealer({
-                        //         transition: 'slide_down',
-                        //         revealChild: revealInfoCondition,
-                        //         child: Widget.Label({
-                        //             maxWidthChars: 10, // Doesn't matter what number
-                        //             truncate: 'end',
-                        //             className: `margin-top-5 ${xwayland ? 'txt txt-italic' : 'txt'}`,
-                        //             css: `
-                        //         font-size: ${Math.min(monitors[monitor].width, monitors[monitor].height) * userOptions.overview.scale / 14.6}px;
-                        //         margin: 0px ${Math.min(monitors[monitor].width, monitors[monitor].height) * userOptions.overview.scale / 10}px;
-                        //     `,
-                        //             // If the title is too short, include the class
-                        //             label: (title.length <= 1 ? `${c}: ${title}` : title),
-                        //         })
-                        //     })
-                        // })
+                        Widget.Revealer({
+                            transition: 'slide_right',
+                            revealChild: revealInfoCondition,
+                            child: Widget.Revealer({
+                                transition: 'slide_down',
+                                revealChild: revealInfoCondition,
+                                child: Widget.Label({
+                                    maxWidthChars: 1, // Doesn't matter what number
+                                    truncate: 'end',
+                                    className: `margin-top-5 ${xwayland ? 'txt txt-italic' : 'txt'}`,
+                                    css: `
+                                font-size: ${Math.min(monitors[monitor].width, monitors[monitor].height) * userOptions.overview.scale / 14.6}px;
+                                margin: 0px ${Math.min(monitors[monitor].width, monitors[monitor].height) * userOptions.overview.scale / 10}px;
+                            `,
+                                    // If the title is too short, include the class
+                                    label: (title.length <= 1 ? `${c}: ${title}` : title),
+                                })
+                            })
+                        })
                     ]
                 })
             }),
