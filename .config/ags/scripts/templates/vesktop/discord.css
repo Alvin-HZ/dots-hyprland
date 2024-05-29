@@ -17,5 +17,5 @@
     --primary-660: #{$surfaceContainer}; /* menu at bottom of channel menu */
     --primary-700: #{$surfaceContainerHighest}; /* side bar */
     --primary-730: #{$surfaceDim}; /* scroll bar */
-    --primary-800: #{$tertiaryContainer}; /* Right click menus */
+    --primary-800: #{$surfaceVariant}; /* Right click menus */
 }

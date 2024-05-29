@@ -39,10 +39,10 @@ transparentize() {
 
 get_light_dark() {
 	lightdark=""
-	if [ ! -f "$CACHE_DIR"/user/colormode.txt ]; then
-		echo "" >"$CACHE_DIR"/user/colormode.txt
+	if [ ! -f "$STATE_DIR/user/colormode.txt" ]; then
+		echo "" >"$STATE_DIR/user/colormode.txt"
 	else
-		lightdark=$(sed -n '1p' "$HOME/.cache/ags/user/colormode.txt")
+		lightdark=$(sed -n '1p' "$STATE_DIR/user/colormode.txt")
 	fi
 	echo "$lightdark"
 }
@@ -94,14 +94,14 @@ apply_kitty() {
 		return
 	fi
 	# Copy template
-	mkdir "$HOME/.config/kitty/themes/"
-	cp "scripts/templates/kitty/theme.conf" "$HOME/.config/kitty/themes/theme_new.conf"
+	mkdir "$XDG_CONFIG_HOME/kitty/themes/"
+	cp "scripts/templates/kitty/theme.conf" "$XDG_CONFIG_HOME/kitty/themes/theme_new.conf"
 	# Apply colors
 	for i in "${!colorlist[@]}"; do
-		sed -i "s/{{ ${colorlist[$i]} }}/${colorvalues[$i]#\#}/g" "$HOME/.config/kitty/themes/theme_new.conf"
+		sed -i "s/{{ ${colorlist[$i]} }}/${colorvalues[$i]#\#}/g" "$XDG_CONFIG_HOME/kitty/themes/theme_new.conf"
 	done
 
-	mv "$HOME/.config/kitty/themes/theme_new.conf" "$HOME/.config/kitty/themes/theme.conf"
+	mv "$XDG_CONFIG_HOME/kitty/themes/theme_new.conf" "$XDG_CONFIG_HOME/kitty/themes/theme.conf"
 	kitten themes --reload-in=all ags
 }
 
@@ -195,7 +195,6 @@ apply_ags() {
 
 apply_code() {
 	lightdark=$(get_light_dark)
-	echo light,
 	if [ "$lightdark" = "light" ]; then
 		sed -i 's/"workbench.colorTheme": ".*"/"workbench.colorTheme": "Default Light Modern"/g' ~/.config/Code/User/settings.json
 	else
