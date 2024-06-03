@@ -188,9 +188,8 @@ apply_qt() {
 }
 
 apply_ags() {
-	sass -I "$STATE_DIR/scss" -I "$CONFIG_DIR/scss/fallback" "$CONFIG_DIR"/scss/main.scss "$CACHE_DIR"/user/generated/style.css
+	ags run-js "handleStyles(false);"
 	ags run-js 'openColorScheme.value = true; Utils.timeout(2000, () => openColorScheme.value = false);'
-	ags run-js "App.resetCss(); App.applyCss('${CACHE_DIR}/user/generated/style.css');"
 }
 
 apply_code() {
@@ -245,6 +244,7 @@ else
 	colorlist=($colornames)     # Array of color names
 	colorvalues=($colorstrings) # Array of color values
 fi
+
 apply_ags &
 apply_hyprland &
 apply_hyprlock &
