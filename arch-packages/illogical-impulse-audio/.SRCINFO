@@ -1,0 +1,13 @@
+pkgbase = illogical-impulse-audio
+	pkgdesc = Illogical Impulse Audio Dependencies
+	pkgver = 1.0
+	pkgrel = 1
+	arch = any
+	license = None
+	depends = pavucontrol
+	depends = wireplumber
+	depends = libdbusmenu-gtk3
+	depends = playerctl
+	depends = swww
+
+pkgname = illogical-impulse-audio

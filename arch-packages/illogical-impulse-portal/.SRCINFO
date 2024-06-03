@@ -1,0 +1,11 @@
+pkgbase = illogical-impulse-portal
+	pkgdesc = Illogical Impulse XDG Desktop Portals
+	pkgver = 1.0
+	pkgrel = 1
+	arch = any
+	license = None
+	depends = xdg-desktop-portal
+	depends = xdg-desktop-portal-gtk
+	depends = xdg-desktop-portal-hyprland-git
+
+pkgname = illogical-impulse-portal

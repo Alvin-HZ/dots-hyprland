@@ -1,0 +1,15 @@
+pkgbase = illogical-impulse-gnome
+	pkgdesc = Illogical Impulse GNOME Dependencies
+	pkgver = 1.0
+	pkgrel = 1
+	arch = any
+	license = None
+	depends = polkit-gnome
+	depends = gnome-keyring
+	depends = gnome-control-center
+	depends = blueberry
+	depends = networkmanager
+	depends = gammastep
+	depends = gnome-bluetooth-3.0
+
+pkgname = illogical-impulse-gnome

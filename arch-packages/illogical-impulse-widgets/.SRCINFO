@@ -1,0 +1,17 @@
+pkgbase = illogical-impulse-widgets
+	pkgdesc = Illogical Impulse Widget Dependencies
+	pkgver = 1.0
+	pkgrel = 1
+	arch = any
+	license = None
+	depends = dart-sass
+	depends = python-pywayland
+	depends = python-psutil
+	depends = hypridle-git
+	depends = hyprlock-git
+	depends = wlogout
+	depends = wl-clipboard
+	depends = hyprpicker-git
+	depends = anyrun-git
+
+pkgname = illogical-impulse-widgets
