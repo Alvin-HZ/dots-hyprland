@@ -220,16 +220,6 @@ apply_vesktop() {
 	cp "$CACHE_DIR"/user/generated/vesktop/discord.css "$XDG_CONFIG_HOME"/vesktop/themes/discord.css
 }
 
-apply_darkman() {
-	lightdark=$(get_light_dark)
-
-	if [ "$lightdark" = "light" ]; then
-		darkman set light
-	else
-		darkman set dark
-	fi
-}
-
 if [[ "$1" = "--bad-apple" ]]; then
 	lightdark=$(get_light_dark)
 	cp scripts/color_generation/specials/_material_badapple"${lightdark}".scss $STATE_DIR/scss/_material.scss
@@ -255,6 +245,5 @@ apply_term &
 apply_kitty &
 apply_qt &
 # apply_nvchad &
-apply_darkman &
 apply_code &
 apply_vesktop &
