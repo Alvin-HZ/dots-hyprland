@@ -138,6 +138,7 @@ apply_hyprlock() {
 	done
 
 	cp "$CACHE_DIR"/user/generated/hypr/hyprlock.conf "$XDG_CONFIG_HOME"/hypr/hyprlock.conf
+	pkill hyprlock && hyprlock
 }
 
 apply_gtk() { # Using gradience-cli
