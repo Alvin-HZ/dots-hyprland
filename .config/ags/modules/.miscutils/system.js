@@ -14,7 +14,8 @@ darkMode.connect('changed', ({ value }) => {
     let lightdark = value ? "dark" : "light";
     execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_state_dir()}/ags/user && sed -i "1s/.*/${lightdark}/"  ${GLib.get_user_state_dir()}/ags/user/colormode.txt`])
         .then(execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/switchcolor.sh`]))
-        .then(execAsync(['bash', '-c', `command -v darkman && darkman set ${lightdark}`])) // Optional darkman integration
+        // .then(execAsync(['bash', '-c', `command -v darkman && darkman set ${lightdark}`])) // Optional darkman integration
+        .then(execAsync(['darkman', 'set', lightdark]))
         .catch(print);
 });
 globalThis['darkMode'] = darkMode;
