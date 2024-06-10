@@ -92,31 +92,31 @@ export default () => Box({
       else if (checkKeybind(event, userOptions.keybinds.sidebar.prevTab))
         widgetContent.prevTab();
 
-      if (widgetContent.attribute.names[widgetContent.attribute.shown.value] == 'APIs') { // If api tab is focused
-        // Focus entry when typing
-        if ((
-          !(event.get_state()[1] & Gdk.ModifierType.CONTROL_MASK) &&
-          event.get_keyval()[1] >= 32 && event.get_keyval()[1] <= 126 &&
-          widget != chatEntry && event.get_keyval()[1] != Gdk.KEY_space)
-          ||
-          ((event.get_state()[1] & Gdk.ModifierType.CONTROL_MASK) &&
-            event.get_keyval()[1] === Gdk.KEY_v)
-        ) {
-          chatEntry.grab_focus();
-          const buffer = chatEntry.get_buffer();
-          buffer.set_text(buffer.text + String.fromCharCode(event.get_keyval()[1]), -1);
-          buffer.place_cursor(buffer.get_iter_at_offset(-1));
-        }
-        // Switch API type
-        else if (checkKeybind(event, userOptions.keybinds.sidebar.apis.nextTab)) {
-          const toSwitchTab = widgetContent.attribute.children[widgetContent.attribute.shown.value];
-          toSwitchTab.attribute.nextTab();
-        }
-        else if (checkKeybind(event, userOptions.keybinds.sidebar.apis.prevTab)) {
-          const toSwitchTab = widgetContent.attribute.children[widgetContent.attribute.shown.value];
-          toSwitchTab.attribute.prevTab();
-        }
-      }
+            if (widgetContent.attribute.names[widgetContent.attribute.shown.value] == 'APIs') { // If api tab is focused
+                // Focus entry when typing
+                if ((
+                    !(event.get_state()[1] & Gdk.ModifierType.CONTROL_MASK) &&
+                    event.get_keyval()[1] >= 32 && event.get_keyval()[1] <= 126 &&
+                    widget != chatEntry && event.get_keyval()[1] != Gdk.KEY_space)
+                    ||
+                    ((event.get_state()[1] & Gdk.ModifierType.CONTROL_MASK) &&
+                        event.get_keyval()[1] === Gdk.KEY_v)
+                ) {
+                    chatEntry.grab_focus();
+                    const buffer = chatEntry.get_buffer();
+                    buffer.set_text(buffer.text + String.fromCharCode(event.get_keyval()[1]), -1);
+                    buffer.place_cursor(buffer.get_iter_at_offset(-1));
+                }
+                // Switch API type
+                else if (checkKeybind(event, userOptions.keybinds.sidebar.apis.nextTab)) {
+                    const toSwitchTab = widgetContent.attribute.children[widgetContent.attribute.shown.value];
+                    toSwitchTab.nextTab();
+                }
+                else if (checkKeybind(event, userOptions.keybinds.sidebar.apis.prevTab)) {
+                    const toSwitchTab = widgetContent.attribute.children[widgetContent.attribute.shown.value];
+                    toSwitchTab.prevTab();
+                }
+            }
 
     })
   ,
