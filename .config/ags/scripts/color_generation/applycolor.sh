@@ -141,8 +141,22 @@ apply_hyprlock() {
 	pkill hyprlock && hyprlock
 }
 
+apply_lightdark() {
+    lightdark=$(get_light_dark)
+    if [ "$lightdark" = "light" ]; then
+        gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
+    else
+        gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+    fi
+}
+
 apply_gtk() { # Using gradience-cli
-	lightdark=$(get_light_dark)
+    usegradience=$(sed -n '4p' "$STATE_DIR/user/colormode.txt")
+    if [[ "$usegradience" = "nogradience" ]]; then
+        rm "$XDG_CONFIG_HOME/gtk-3.0/gtk.css"
+        rm "$XDG_CONFIG_HOME/gtk-4.0/gtk.css"
+        return
+    fi
 
 	# Copy template
 	mkdir -p "$CACHE_DIR"/user/generated/gradience
@@ -220,25 +234,17 @@ apply_vesktop() {
 	cp "$CACHE_DIR"/user/generated/vesktop/discord.css "$XDG_CONFIG_HOME"/vesktop/themes/discord.css
 }
 
-if [[ "$1" = "--bad-apple" ]]; then
-	lightdark=$(get_light_dark)
-	cp scripts/color_generation/specials/_material_badapple"${lightdark}".scss $STATE_DIR/scss/_material.scss
-	colornames=$(cat scripts/color_generation/specials/_material_badapple"${lightdark}".scss | cut -d: -f1)
-	colorstrings=$(cat scripts/color_generation/specials/_material_badapple"${lightdark}".scss | cut -d: -f2 | cut -d ' ' -f2 | cut -d ";" -f1)
-	IFS=$'\n'
-	colorlist=($colornames)     # Array of color names
-	colorvalues=($colorstrings) # Array of color values
-else
-	colornames=$(cat $STATE_DIR/scss/_material.scss | cut -d: -f1)
-	colorstrings=$(cat $STATE_DIR/scss/_material.scss | cut -d: -f2 | cut -d ' ' -f2 | cut -d ";" -f1)
-	IFS=$'\n'
-	colorlist=($colornames)     # Array of color names
-	colorvalues=($colorstrings) # Array of color values
-fi
+
+colornames=$(cat $STATE_DIR/scss/_material.scss | cut -d: -f1)
+colorstrings=$(cat $STATE_DIR/scss/_material.scss | cut -d: -f2 | cut -d ' ' -f2 | cut -d ";" -f1)
+IFS=$'\n'
+colorlist=( $colornames ) # Array of color names
+colorvalues=( $colorstrings ) # Array of color values
 
 apply_ags &
 apply_hyprland &
 apply_hyprlock &
+apply_lightdark &
 apply_gtk &
 apply_fuzzel &
 apply_term &
