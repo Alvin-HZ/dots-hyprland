@@ -142,21 +142,21 @@ apply_hyprlock() {
 }
 
 apply_lightdark() {
-    lightdark=$(get_light_dark)
-    if [ "$lightdark" = "light" ]; then
-        gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
-    else
-        gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-    fi
+	lightdark=$(get_light_dark)
+	if [ "$lightdark" = "light" ]; then
+		gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
+	else
+		gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+	fi
 }
 
 apply_gtk() { # Using gradience-cli
-    usegradience=$(sed -n '4p' "$STATE_DIR/user/colormode.txt")
-    if [[ "$usegradience" = "nogradience" ]]; then
-        rm "$XDG_CONFIG_HOME/gtk-3.0/gtk.css"
-        rm "$XDG_CONFIG_HOME/gtk-4.0/gtk.css"
-        return
-    fi
+	usegradience=$(sed -n '4p' "$STATE_DIR/user/colormode.txt")
+	if [[ "$usegradience" = "nogradience" ]]; then
+		rm "$XDG_CONFIG_HOME/gtk-3.0/gtk.css"
+		rm "$XDG_CONFIG_HOME/gtk-4.0/gtk.css"
+		return
+	fi
 
 	# Copy template
 	mkdir -p "$CACHE_DIR"/user/generated/gradience
@@ -173,6 +173,7 @@ apply_gtk() { # Using gradience-cli
 	# Set light/dark preference
 	# And set GTK theme manually as Gradience defaults to light adw-gtk3
 	# (which is unreadable when broken when you use dark mode)
+	lightdark=$(get_light_dark)
 	if [ "$lightdark" = "light" ]; then
 		gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3'
 		gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
@@ -234,17 +235,16 @@ apply_vesktop() {
 	cp "$CACHE_DIR"/user/generated/vesktop/discord.css "$XDG_CONFIG_HOME"/vesktop/themes/discord.css
 }
 
-
 colornames=$(cat $STATE_DIR/scss/_material.scss | cut -d: -f1)
 colorstrings=$(cat $STATE_DIR/scss/_material.scss | cut -d: -f2 | cut -d ' ' -f2 | cut -d ";" -f1)
 IFS=$'\n'
-colorlist=( $colornames ) # Array of color names
-colorvalues=( $colorstrings ) # Array of color values
+colorlist=($colornames)     # Array of color names
+colorvalues=($colorstrings) # Array of color values
 
 apply_ags &
 apply_hyprland &
 apply_hyprlock &
-apply_lightdark &
+# apply_lightdark &
 apply_gtk &
 apply_fuzzel &
 apply_term &
