@@ -11,55 +11,54 @@ import { setupCursorHover } from '../../.widgetutils/cursorhover.js';
 import { distroID, isArchDistro, isDebianDistro, hasFlatpak } from '../../.miscutils/system.js';
 
 const scripts = [
-  {
-    icon: 'nixos-symbolic',
-    name: 'Trim system generations to 5',
-    command: `sudo ${App.configDir}/scripts/quickscripts/nixos-trim-generations.sh 5 0 system`,
-    enabled: distroID == 'nixos',
-  },
-  {
-    icon: 'nixos-symbolic',
-    name: 'Trim home manager generations to 5',
-    command: `${App.configDir}/scripts/quickscripts/nixos-trim-generations.sh 5 0 home-manager`,
-    enabled: distroID == 'nixos',
-  },
-  {
-    icon: 'ubuntu-symbolic',
-    name: 'Update packages',
-    command: `sudo apt update && sudo apt upgrade -y`,
-    enabled: isDebianDistro,
-  },
-  {
-    icon: 'fedora-symbolic',
-    name: 'Update packages',
-    command: `sudo dnf upgrade -y`,
-    enabled: distroID == 'fedora',
-  },
-  /* Replaced arch script with my own */
-  // {
-  //     icon: 'arch-symbolic',
-  //     name: 'Update packages',
-  //     command: `sudo pacman -Syyu`,
-  //     enabled: isArchDistro,
-  // },
-  // {
-  //     icon: 'flatpak-symbolic',
-  //     name: 'Uninstall unused flatpak packages',
-  //     command: `flatpak uninstall --unused`,
-  //     enabled: hasFlatpak,
-  // },
-  {
-    icon: 'arch-symbolic',
-    name: 'Remove orphan packages',
-    command: `sudo pacman -R $(pacman -Qdtq)`,
-    enabled: isArchDistro,
-  },
-  {
-    icon: 'flatpak-symbolic',
-    name: 'Uninstall unused flatpak packages',
-    command: `flatpak uninstall --unused`,
-    enabled: hasFlatpak,
-  },
+    {
+    	icon: 'desktop-symbolic',
+    	name: 'Change screen resolution',
+    	command: `bash ${App.configDir}/modules/sideleft/tools/changeres.sh`,
+    	enabled: true,
+	},
+    {
+        icon: 'nixos-symbolic',
+        name: 'Trim system generations to 5',
+        command: `sudo ${App.configDir}/scripts/quickscripts/nixos-trim-generations.sh 5 0 system`,
+        enabled: distroID == 'nixos',
+    },
+    {
+        icon: 'nixos-symbolic',
+        name: 'Trim home manager generations to 5',
+        command: `${App.configDir}/scripts/quickscripts/nixos-trim-generations.sh 5 0 home-manager`,
+        enabled: distroID == 'nixos',
+    },
+    {
+        icon: 'ubuntu-symbolic',
+        name: 'Update packages',
+        command: `sudo apt update && sudo apt upgrade -y`,
+        enabled: isDebianDistro,
+    },
+    {
+        icon: 'fedora-symbolic',
+        name: 'Update packages',
+        command: `sudo dnf upgrade -y`,
+        enabled: distroID == 'fedora',
+    },
+    {
+        icon: 'arch-symbolic',
+        name: 'Update packages',
+        command: `sudo pacman -Syyu`,
+        enabled: isArchDistro,
+    },
+    {
+        icon: 'arch-symbolic',
+        name: 'Remove orphan packages',
+        command: `sudo pacman -R $(pacman -Qdtq)`,
+        enabled: isArchDistro,
+    },
+    {
+        icon: 'flatpak-symbolic',
+        name: 'Uninstall unused flatpak packages',
+        command: `flatpak uninstall --unused`,
+        enabled: hasFlatpak,
+    },
 ];
 
 export default () => SidebarModule({
