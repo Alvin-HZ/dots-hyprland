@@ -26,5 +26,17 @@
   "telemetry": {
     "diagnostics": false,
     "metrics": false
+  },
+  "languages": {
+    "Java": {
+      "formatter": "language_server",
+      "format_on_save": "on"
+    }
+  },
+  "lsp": {
+    "java": {
+      "java.format.settings.url": "https://raw.githubusercontent.com/redhat-developer/vscode-java/refs/heads/master/formatters/eclipse-formatter.xml",
+      "java.format.comments.enabled": true
+    }
   }
 }
