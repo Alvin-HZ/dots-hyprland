@@ -251,6 +251,8 @@ function overrideConfigRecursive(userOverrides, configOptions = {}, check = true
             if (key === "substitutions" || key === "regexSubstitutions" || key === "extraGptModels") {
                 overrideConfigRecursive(value, configOptions[key], false);
             } else overrideConfigRecursive(value, configOptions[key]);
+        } else {
+            configOptions[key] = value;
         }
     }
 }
