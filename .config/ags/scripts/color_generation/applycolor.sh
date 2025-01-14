@@ -144,8 +144,10 @@ apply_hyprlock() {
 apply_lightdark() {
 	lightdark=$(get_light_dark)
 	if [ "$lightdark" = "light" ]; then
+		gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3'
 		gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
 	else
+		gsettings set org.gnome.desktop.interface gtk-theme adw-gtk3-dark
 		gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 	fi
 }
@@ -244,7 +246,7 @@ colorvalues=($colorstrings) # Array of color values
 apply_ags &
 apply_hyprland &
 apply_hyprlock &
-# apply_lightdark &
+apply_lightdark &
 apply_gtk &
 apply_fuzzel &
 apply_term &
