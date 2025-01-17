@@ -10,6 +10,7 @@ STATE_DIR="$XDG_STATE_HOME/ags"
 term_alpha=100 #Set this to < 100 make all your terminals transparent
 # sleep 0 # idk i wanted some delay or colors dont get applied properly
 if [ ! -d "$CACHE_DIR"/user/generated ]; then
+  mkdir -p "$CACHE_DIR"/user/generated
 	mkdir -p "$CACHE_DIR"/user/generated
 fi
 cd "$CONFIG_DIR" || exit
@@ -19,9 +20,9 @@ colorstrings=''
 colorlist=()
 colorvalues=()
 
-# wallpath=$(swww query | head -1 | awk -F 'image: ' '{print $2}')
-# wallpath_png="$CACHE_DIR/user/generated/hypr/lockscreen.png"
-# convert "$wallpath" "$wallpath_png"
+wallpath=$(swww query | head -1 | awk -F 'image: ' '{print $2}')
+wallpath_png="$CACHE_DIR/user/generated/hypr/lockscreen.png"
+convert "$wallpath" "$wallpath_png"
 # wallpath_png=$(echo "$wallpath_png" | sed 's/\//\\\//g')
 # wallpath_png=$(sed 's/\//\\\\\//g' <<< "$wallpath_png")
 
@@ -248,6 +249,8 @@ apply_hyprland &
 apply_hyprlock &
 apply_lightdark &
 apply_gtk &
+apply_qt &
+apply_pywal &
 apply_fuzzel &
 apply_term &
 apply_kitty &
