@@ -210,6 +210,11 @@ apply_ags() {
 	ags run-js 'openColorScheme.value = true; Utils.timeout(2000, () => openColorScheme.value = false);'
 }
 
+apply_qt() {
+  sh "$CONFIG_DIR/scripts/kvantum/materialQT.sh"          # generate kvantum theme
+  python "$CONFIG_DIR/scripts/kvantum/changeAdwColors.py" # apply config colors
+}
+
 apply_code() {
 	lightdark=$(get_light_dark)
 	if [ "$lightdark" = "light" ]; then
@@ -217,25 +222,8 @@ apply_code() {
 	else
 		sed -i 's/"workbench.colorTheme": ".*"/"workbench.colorTheme": "Default Dark Modern"/g' ~/.config/Code/User/settings.json
 	fi
-
 }
 
-apply_vesktop() {
-	# Check if scripts/templates/vesktop/discord.css exists
-	if [ ! -f "scripts/templates/vesktop/discord.css" ]; then
-		echo "Template file not found for Hyprland colors. Skipping that."
-		return
-	fi
-	# Copy template
-	mkdir -p "$CACHE_DIR"/user/generated/vesktop
-	cp "scripts/templates/vesktop/discord.css" "$CACHE_DIR"/user/generated/vesktop/discord.css
-	# Apply colors
-	for i in "${!colorlist[@]}"; do
-		sed -i "s/{${colorlist[$i]}}/${colorvalues[$i]#\#}/g" "$CACHE_DIR"/user/generated/vesktop/discord.css
-	done
-
-	cp "$CACHE_DIR"/user/generated/vesktop/discord.css "$XDG_CONFIG_HOME"/vesktop/themes/discord.css
-}
 
 colornames=$(cat $STATE_DIR/scss/_material.scss | cut -d: -f1)
 colorstrings=$(cat $STATE_DIR/scss/_material.scss | cut -d: -f2 | cut -d ' ' -f2 | cut -d ";" -f1)
