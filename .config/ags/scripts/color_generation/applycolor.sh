@@ -169,8 +169,8 @@ apply_gtk() { # Using gradience-cli
 		sed -i "s/{{ ${colorlist[$i]} }}/${colorvalues[$i]}/g" "$CACHE_DIR"/user/generated/gradience/preset.json
 	done
 
-	mkdir -p "$XDG_CONFIG_HOME/presets" # create gradience presets folder
-	gradience-cli apply -p "$CACHE_DIR"/user/generated/gradience/preset.json --gtk both
+  mkdir -p "$XDG_CONFIG_HOME/presets" # create gradience presets folder
+  $(eval echo $ILLOGICAL_IMPULSE_VIRTUAL_ENV)/bin/gradience-cli apply -p "$CACHE_DIR"/user/generated/gradience/preset.json --gtk both
 
 	# Set light/dark preference
 	# And set GTK theme manually as Gradience defaults to light adw-gtk3
