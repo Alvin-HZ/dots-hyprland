@@ -108,6 +108,7 @@ esac
 
 # Why need cleanbuild? see https://github.com/end-4/dots-hyprland/issues/389#issuecomment-2040671585
 # Why install deps by running a seperate command? see pinned comment of https://aur.archlinux.org/packages/hyprland-git
+ask=true
 case $SKIP_HYPR_AUR in
 true) sleep 0 ;;
 *)
