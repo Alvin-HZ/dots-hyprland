@@ -237,10 +237,12 @@ let configOptions = {
 }
 
 // Override defaults with user's options
-let optionsOkay = true;
-function overrideConfigRecursive(userOverrides, configOptions = {}, check = true) {
+function overrideConfigRecursive(userOverrides, configOptions = {}) {
     for (const [key, value] of Object.entries(userOverrides)) {
-        if (!check) {
+        if (typeof value === 'object' && !(value instanceof Array)) {
+            overrideConfigRecursive(value, configOptions[key]);
+        }
+        else {
             configOptions[key] = value;
             continue;
         }
@@ -257,11 +259,6 @@ function overrideConfigRecursive(userOverrides, configOptions = {}, check = true
     }
 }
 overrideConfigRecursive(userOverrides, configOptions);
-if (!optionsOkay) Utils.timeout(2000, () => Utils.execAsync(['notify-send',
-    'Update your user options',
-    'One or more config options don\'t exist',
-    '-a', 'ags',
-]).catch(print))
 
 globalThis['userOptions'] = configOptions;
 export default configOptions;
