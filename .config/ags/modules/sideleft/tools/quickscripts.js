@@ -16,54 +16,54 @@ import {
 } from "../../.miscutils/system.js";
 
 const scripts = [
-  {
-    icon: "desktop-symbolic",
-    name: getString("Change screen resolution"),
-    command: `bash ${App.configDir}/modules/sideleft/tools/changeres.sh`,
-    enabled: true,
-  },
-  {
-    icon: "nixos-symbolic",
-    name: getString("Trim system generations to 5"),
-    command: `sudo ${App.configDir}/scripts/quickscripts/nixos-trim-generations.sh 5 0 system`,
-    enabled: distroID == "nixos",
-  },
-  {
-    icon: "nixos-symbolic",
-    name: getString("Trim home manager generations to 5"),
-    command: `${App.configDir}/scripts/quickscripts/nixos-trim-generations.sh 5 0 home-manager`,
-    enabled: distroID == "nixos",
-  },
-  {
-    icon: "ubuntu-symbolic",
-    name: getString("Update packages"),
-    command: `sudo apt update && sudo apt upgrade -y`,
-    enabled: isDebianDistro,
-  },
-  {
-    icon: "fedora-symbolic",
-    name: getString("Update packages"),
-    command: `sudo dnf upgrade -y`,
-    enabled: distroID == "fedora",
-  },
-  {
-    icon: "arch-symbolic",
-    name: getString("Update packages"),
-    command: `sudo pacman -Syyu`,
-    enabled: isArchDistro,
-  },
-  {
-    icon: "arch-symbolic",
-    name: getString("Remove orphan packages"),
-    command: `sudo pacman -R $(pacman -Qdtq)`,
-    enabled: isArchDistro,
-  },
-  {
-    icon: "flatpak-symbolic",
-    name: getString("Uninstall unused flatpak packages"),
-    command: `flatpak uninstall --unused`,
-    enabled: hasFlatpak,
-  },
+    {
+        icon: 'desktop-symbolic',
+        name: getString('Change screen resolution'),
+        command: `bash ${App.configDir}/modules/sideleft/tools/changeres.sh`,
+        enabled: true,
+    },
+    {
+        icon: 'nixos-symbolic',
+        name: getString('Trim system generations to 5'),
+        command: `sudo ${App.configDir}/scripts/quickscripts/nixos-trim-generations.sh 5 0 system`,
+        enabled: distroID == 'nixos',
+    },
+    {
+        icon: 'nixos-symbolic',
+        name: getString('Trim home manager generations to 5'),
+        command: `${App.configDir}/scripts/quickscripts/nixos-trim-generations.sh 5 0 home-manager`,
+        enabled: distroID == 'nixos',
+    },
+    {
+        icon: 'ubuntu-symbolic',
+        name: getString('Update packages'),
+        command: `sudo apt update && sudo apt upgrade -y`,
+        enabled: isDebianDistro,
+    },
+    {
+        icon: 'fedora-symbolic',
+        name: getString('Update packages'),
+        command: `sudo dnf upgrade -y`,
+        enabled: distroID == 'fedora',
+    },
+    {
+        icon: 'arch-symbolic',
+        name: getString('Update packages'),
+        command: `sudo pacman -Syyu`,
+        enabled: isArchDistro,
+    },
+    {
+        icon: 'arch-symbolic',
+        name: getString('Remove orphan packages'),
+        command: `sudo pacman -R (pacman -Qdtq)`,
+        enabled: isArchDistro,
+    },
+    {
+        icon: 'flatpak-symbolic',
+        name: getString('Uninstall unused flatpak packages'),
+        command: `flatpak uninstall --unused`,
+        enabled: hasFlatpak,
+    },
 ];
 
 export default () =>
