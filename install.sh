@@ -7,46 +7,45 @@ source ./scriptdata/installers
 source ./scriptdata/options
 
 #####################################################################################
-if ! command -v pacman >/dev/null 2>&1; then 
-  printf "\e[31m[$0]: pacman not found, it seems that the system is not ArchLinux or Arch-based distros. Aborting...\e[0m\n"
-  exit 1
+if ! command -v pacman >/dev/null 2>&1; then
+	printf "\e[31m[$0]: pacman not found, it seems that the system is not ArchLinux or Arch-based distros. Aborting...\e[0m\n"
+	exit 1
 fi
 prevent_sudo_or_root
 
-startask () {
-  printf "\e[34m[$0]: Hi there! Before we start:\n"
-  printf 'This script 1. only works for ArchLinux and Arch-based distros.\n'
-  printf '            2. does not handle system-level/hardware stuff like Nvidia drivers\n'
-  printf "\e[31m"
-  
-  printf "Would you like to create a backup for \"$XDG_CONFIG_HOME\" and \"$HOME/.local/\" folders?\n[y/N]: "
-  read -p " " backup_confirm
-  case $backup_confirm in
-    [yY][eE][sS]|[yY])
-      backup_configs
-      ;;
-    *)
-      echo "Skipping backup..."
-      ;;
-  esac
-  
+startask() {
+	printf "\e[34m[$0]: Hi there! Before we start:\n"
+	printf 'This script 1. only works for ArchLinux and Arch-based distros.\n'
+	printf '            2. does not handle system-level/hardware stuff like Nvidia drivers\n'
+	printf "\e[31m"
 
-  printf '\n'
-  printf 'Do you want to confirm every time before a command executes?\n'
-  printf '  y = Yes, ask me before executing each of them. (DEFAULT)\n'
-  printf '  n = No, just execute them automatically.\n'
-  printf '  a = Abort.\n'
-  read -p "====> " p
-  case $p in
-    n) ask=false ;;
-    a) exit 1 ;;
-    *) ask=true ;;
-  esac
+	printf "Would you like to create a backup for \"$XDG_CONFIG_HOME\" and \"$HOME/.local/\" folders?\n[y/N]: "
+	read -p " " backup_confirm
+	case $backup_confirm in
+	[yY][eE][sS] | [yY])
+		backup_configs
+		;;
+	*)
+		echo "Skipping backup..."
+		;;
+	esac
+
+	printf '\n'
+	printf 'Do you want to confirm every time before a command executes?\n'
+	printf '  y = Yes, ask me before executing each of them. (DEFAULT)\n'
+	printf '  n = No, just execute them automatically.\n'
+	printf '  a = Abort.\n'
+	read -p "====> " p
+	case $p in
+	n) ask=false ;;
+	a) exit 1 ;;
+	*) ask=true ;;
+	esac
 }
 
 case $ask in
-  false)sleep 0 ;;
-  *)startask ;;
+false) sleep 0 ;;
+*) startask ;;
 esac
 
 set -e
@@ -55,26 +54,26 @@ printf "\e[36m[$0]: 1. Get packages and setup user groups/services\n\e[0m"
 
 # Issue #363
 case $SKIP_SYSUPDATE in
-  true) sleep 0;;
-  *) v sudo pacman -Syu;;
+true) sleep 0 ;;
+*) v sudo pacman -Syu ;;
 esac
 
 remove_bashcomments_emptylines ${DEPLISTFILE} ./cache/dependencies_stripped.conf
-readarray -t pkglist < ./cache/dependencies_stripped.conf
+readarray -t pkglist <./cache/dependencies_stripped.conf
 
 # Use yay. Because paru does not support cleanbuild.
 # Also see https://wiki.hyprland.org/FAQ/#how-do-i-update
-if ! command -v yay >/dev/null 2>&1;then
-  echo -e "\e[33m[$0]: \"yay\" not found.\e[0m"
-  showfun install-yay
-  v install-yay
+if ! command -v yay >/dev/null 2>&1; then
+	echo -e "\e[33m[$0]: \"yay\" not found.\e[0m"
+	showfun install-yay
+	v install-yay
 fi
 
 # Install extra packages from dependencies.conf as declared by the user
-if (( ${#pkglist[@]} != 0 )); then
+if ((${#pkglist[@]} != 0)); then
 	if $ask; then
 		# execute per element of the array $pkglist
-		for i in "${pkglist[@]}";do v yay -S --needed $i;done
+		for i in "${pkglist[@]}"; do v yay -S --needed $i; done
 	else
 		# execute for all elements of the array $pkglist in one line
 		v yay -S --needed --noconfirm ${pkglist[*]}
@@ -105,8 +104,8 @@ metapkgs+=(./arch-packages/illogical-impulse-agsv1)
 metapkgs+=(./arch-packages/illogical-impulse-hyprland)
 metapkgs+=(./arch-packages/illogical-impulse-microtex-git)
 metapkgs+=(./arch-packages/illogical-impulse-oneui4-icons-git)
-[[ -f /usr/share/icons/Bibata-Modern-Classic/index.theme ]] || \
-  metapkgs+=(./arch-packages/illogical-impulse-bibata-modern-classic-bin)
+[[ -f /usr/share/icons/Bibata-Modern-Classic/index.theme ]] ||
+	metapkgs+=(./arch-packages/illogical-impulse-bibata-modern-classic-bin)
 
 for i in "${metapkgs[@]}"; do
 	metainstallflags="--needed"
@@ -119,31 +118,30 @@ showfun install-python-packages
 v install-python-packages
 
 ## Optional dependencies
-if pacman -Qs ^plasma-browser-integration$ ;then SKIP_PLASMAINTG=true;fi
+if pacman -Qs ^plasma-browser-integration$; then SKIP_PLASMAINTG=true; fi
 case $SKIP_PLASMAINTG in
-  true) sleep 0;;
-  *)
-    if $ask;then
-      echo -e "\e[33m[$0]: NOTE: The size of \"plasma-browser-integration\" is about 250 MiB.\e[0m"
-      echo -e "\e[33mIt is needed if you want playtime of media in Firefox to be shown on the music controls widget.\e[0m"
-      echo -e "\e[33mInstall it? [y/N]\e[0m"
-      read -p "====> " p
-    else
-      p=y
-    fi
-    case $p in
-      y) x sudo pacman -S --needed --noconfirm plasma-browser-integration ;;
-      *) echo "Ok, won't install"
-    esac
-    ;;
+true) sleep 0 ;;
+*)
+	if $ask; then
+		echo -e "\e[33m[$0]: NOTE: The size of \"plasma-browser-integration\" is about 250 MiB.\e[0m"
+		echo -e "\e[33mIt is needed if you want playtime of media in Firefox to be shown on the music controls widget.\e[0m"
+		echo -e "\e[33mInstall it? [y/N]\e[0m"
+		read -p "====> " p
+	else
+		p=y
+	fi
+	case $p in
+	y) x sudo pacman -S --needed --noconfirm plasma-browser-integration ;;
+	*) echo "Ok, won't install" ;;
+	esac
+	;;
 esac
 
 v sudo usermod -aG video,i2c,input "$(whoami)"
 v bash -c "echo i2c-dev | sudo tee /etc/modules-load.d/i2c-dev.conf"
 v systemctl --user enable ydotool --now
-v gsettings set org.gnome.desktop.interface font-name 'Rubik 11'
-v gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-
+# v gsettings set org.gnome.desktop.interface font-name 'Rubik 11'
+# v gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
 #####################################################################################
 printf "\e[36m[$0]: 2. Copying + Configuring\e[0m\n"
@@ -157,88 +155,89 @@ v mkdir -p $XDG_BIN_HOME $XDG_CACHE_HOME $XDG_CONFIG_HOME $XDG_DATA_HOME
 
 # MISC (For .config/* but not AGS, not Fish, not Hyprland)
 case $SKIP_MISCCONF in
-  true) sleep 0;;
-  *)
-    for i in $(find .config/ -mindepth 1 -maxdepth 1 ! -name 'ags' ! -name 'fish' ! -name 'hypr' -exec basename {} \;); do
-#      i=".config/$i"
-      echo "[$0]: Found target: .config/$i"
-      if [ -d ".config/$i" ];then v rsync -av --delete ".config/$i/" "$XDG_CONFIG_HOME/$i/"
-      elif [ -f ".config/$i" ];then v rsync -av ".config/$i" "$XDG_CONFIG_HOME/$i"
-      fi
-    done
-    ;;
+true) sleep 0 ;;
+*)
+	for i in $(find .config/ -mindepth 1 -maxdepth 1 ! -name 'ags' ! -name 'fish' ! -name 'hypr' -exec basename {} \;); do
+		#      i=".config/$i"
+		echo "[$0]: Found target: .config/$i"
+		if [ -d ".config/$i" ]; then
+			v rsync -av --delete ".config/$i/" "$XDG_CONFIG_HOME/$i/"
+		elif [ -f ".config/$i" ]; then
+			v rsync -av ".config/$i" "$XDG_CONFIG_HOME/$i"
+		fi
+	done
+	;;
 esac
 
 case $SKIP_FISH in
-  true) sleep 0;;
-  *)
-    v rsync -av --delete .config/fish/ "$XDG_CONFIG_HOME"/fish/
-    ;;
+true) sleep 0 ;;
+*)
+	v rsync -av --delete .config/fish/ "$XDG_CONFIG_HOME"/fish/
+	;;
 esac
 
 # For AGS
 case $SKIP_AGS in
-  true) sleep 0;;
-  *)
-    v rsync -av --delete --exclude '/user_options.js' .config/ags/ "$XDG_CONFIG_HOME"/ags/
-    t="$XDG_CONFIG_HOME/ags/user_options.js"
-    if [ -f $t ];then
-      echo -e "\e[34m[$0]: \"$t\" already exists.\e[0m"
-      # v cp -f .config/ags/user_options.js $t.new
-      existed_ags_opt=y
-    else
-      echo -e "\e[33m[$0]: \"$t\" does not exist yet.\e[0m"
-      v cp .config/ags/user_options.js $t
-      existed_ags_opt=n
-    fi
-    ;;
+true) sleep 0 ;;
+*)
+	v rsync -av --delete --exclude '/user_options.js' .config/ags/ "$XDG_CONFIG_HOME"/ags/
+	t="$XDG_CONFIG_HOME/ags/user_options.js"
+	if [ -f $t ]; then
+		echo -e "\e[34m[$0]: \"$t\" already exists.\e[0m"
+		# v cp -f .config/ags/user_options.js $t.new
+		existed_ags_opt=y
+	else
+		echo -e "\e[33m[$0]: \"$t\" does not exist yet.\e[0m"
+		v cp .config/ags/user_options.js $t
+		existed_ags_opt=n
+	fi
+	;;
 esac
 
 # For Hyprland
 case $SKIP_HYPRLAND in
-  true) sleep 0;;
-  *)
-    v rsync -av --delete --exclude '/custom' --exclude '/hyprlock.conf' --exclude '/hypridle.conf' --exclude '/hyprland.conf' .config/hypr/ "$XDG_CONFIG_HOME"/hypr/
-    t="$XDG_CONFIG_HOME/hypr/hyprland.conf"
-    if [ -f $t_0 ];then
-      echo -e "\e[34m[$0]: \"$t\" already exists.\e[0m"
-      v cp -f .config/hypr/hyprland.conf $t.new
-      existed_hypr_conf=y
-    else
-      echo -e "\e[33m[$0]: \"$t\" does not exist yet.\e[0m"
-      v cp .config/hypr/hyprland.conf $t
-      existed_hypr_conf=n
-    fi
-    t="$XDG_CONFIG_HOME/hypr/hypridle.conf"
-    if [ -f $t ];then
-      echo -e "\e[34m[$0]: \"$t\" already exists.\e[0m"
-      v cp -f .config/hypr/hypridle.conf $t.new
-      existed_hypridle_conf=y
-    else
-      echo -e "\e[33m[$0]: \"$t\" does not exist yet.\e[0m"
-      v cp .config/hypr/hypridle.conf $t
-      existed_hypridle_conf=n
-    fi
-    t="$XDG_CONFIG_HOME/hypr/hyprlock.conf"
-    if [ -f $t ];then
-      echo -e "\e[34m[$0]: \"$t\" already exists.\e[0m"
-      v cp -f .config/hypr/hyprlock.conf $t.new
-      existed_hyprlock_conf=y
-    else
-      echo -e "\e[33m[$0]: \"$t\" does not exist yet.\e[0m"
-      v cp .config/hypr/hyprlock.conf $t
-      existed_hyprlock_conf=n
-    fi
-    t="$XDG_CONFIG_HOME/hypr/custom"
-    if [ -d $t ];then
-      echo -e "\e[34m[$0]: \"$t\" already exists, will not do anything.\e[0m"
-    else
-      echo -e "\e[33m[$0]: \"$t\" does not exist yet.\e[0m"
-      v rsync -av --delete .config/hypr/custom/ $t/
-    fi
-    ;;
+true) sleep 0 ;;
+*)
+	v rsync -av --delete --exclude '/custom' --exclude '/hyprlock.conf' --exclude '/hypridle.conf' --exclude '/hyprland.conf' .config/hypr/ "$XDG_CONFIG_HOME"/hypr/
+	t="$XDG_CONFIG_HOME/hypr/hyprland.conf"
+	if [ -f $t_0 ]; then
+		echo -e "\e[34m[$0]: \"$t\" already exists.\e[0m"
+		v cp -f .config/hypr/hyprland.conf $t.new
+		existed_hypr_conf=y
+	else
+		echo -e "\e[33m[$0]: \"$t\" does not exist yet.\e[0m"
+		v cp .config/hypr/hyprland.conf $t
+		existed_hypr_conf=n
+	fi
+	t="$XDG_CONFIG_HOME/hypr/hypridle.conf"
+	if [ -f $t ]; then
+		echo -e "\e[34m[$0]: \"$t\" already exists.\e[0m"
+		v cp -f .config/hypr/hypridle.conf $t.new
+		existed_hypridle_conf=y
+	else
+		echo -e "\e[33m[$0]: \"$t\" does not exist yet.\e[0m"
+		v cp .config/hypr/hypridle.conf $t
+		existed_hypridle_conf=n
+	fi
+	t="$XDG_CONFIG_HOME/hypr/hyprlock.conf"
+	if [ -f $t ]; then
+		echo -e "\e[34m[$0]: \"$t\" already exists.\e[0m"
+		v cp -f .config/hypr/hyprlock.conf $t.new
+		existed_hyprlock_conf=y
+	else
+		echo -e "\e[33m[$0]: \"$t\" does not exist yet.\e[0m"
+		v cp .config/hypr/hyprlock.conf $t
+		existed_hyprlock_conf=n
+	fi
+	t="$XDG_CONFIG_HOME/hypr/custom"
+	if [ -d $t ]; then
+		echo -e "\e[34m[$0]: \"$t\" already exists, will not do anything.\e[0m"
+	else
+		echo -e "\e[33m[$0]: \"$t\" does not exist yet.\e[0m"
+		v rsync -av --delete .config/hypr/custom/ $t/
+	fi
+	;;
 esac
-
 
 # some foldes (eg. .local/bin) should be processed separately to avoid `--delete' for rsync,
 # since the files here come from different places, not only about one program.
@@ -265,9 +264,9 @@ warn_files_tests+=(/usr/local/share/icons/OneUI{,-dark,-light})
 warn_files_tests+=(/usr/local/share/icons/Bibata-Modern-Classic)
 warn_files_tests+=(/usr/local/bin/{LaTeX,res})
 for i in ${warn_files_tests[@]}; do
-  echo $i
-  test -f $i && warn_files+=($i)
-  test -d $i && warn_files+=($i)
+	echo $i
+	test -f $i && warn_files+=($i)
+	test -d $i && warn_files+=($i)
 done
 
 #####################################################################################
@@ -283,27 +282,35 @@ printf "\e[36mPress \e[30m\e[46m Super+/ \e[0m\e[36m for a list of keybinds\e[0m
 printf "\n"
 
 case $existed_ags_opt in
-  y) printf "\n\e[33m[$0]: Warning: \"$XDG_CONFIG_HOME/ags/user_options.js\" already existed before and we didn't overwrite it. \e[0m\n"
-#    printf "\e[33mPlease use \"$XDG_CONFIG_HOME/ags/user_options.js.new\" as a reference for a proper format.\e[0m\n"
-;;esac
+y)
+	printf "\n\e[33m[$0]: Warning: \"$XDG_CONFIG_HOME/ags/user_options.js\" already existed before and we didn't overwrite it. \e[0m\n"
+	#    printf "\e[33mPlease use \"$XDG_CONFIG_HOME/ags/user_options.js.new\" as a reference for a proper format.\e[0m\n"
+	;;
+esac
 case $existed_hypr_conf in
-  y) printf "\n\e[33m[$0]: Warning: \"$XDG_CONFIG_HOME/hypr/hyprland.conf\" already existed before and we didn't overwrite it. \e[0m\n"
-     printf "\e[33mPlease use \"$XDG_CONFIG_HOME/hypr/hyprland.conf.new\" as a reference for a proper format.\e[0m\n"
-     printf "\e[33mIf this is your first time installation, you must overwrite \"$XDG_CONFIG_HOME/hypr/hyprland.conf\" with \"$XDG_CONFIG_HOME/hypr/hyprland.conf.new\".\e[0m\n"
-;;esac
+y)
+	printf "\n\e[33m[$0]: Warning: \"$XDG_CONFIG_HOME/hypr/hyprland.conf\" already existed before and we didn't overwrite it. \e[0m\n"
+	printf "\e[33mPlease use \"$XDG_CONFIG_HOME/hypr/hyprland.conf.new\" as a reference for a proper format.\e[0m\n"
+	printf "\e[33mIf this is your first time installation, you must overwrite \"$XDG_CONFIG_HOME/hypr/hyprland.conf\" with \"$XDG_CONFIG_HOME/hypr/hyprland.conf.new\".\e[0m\n"
+	;;
+esac
 case $existed_hypridle_conf in
-  y) printf "\n\e[33m[$0]: Warning: \"$XDG_CONFIG_HOME/hypr/hypridle.conf\" already existed before and we didn't overwrite it. \e[0m\n"
-     printf "\e[33mPlease use \"$XDG_CONFIG_HOME/hypr/hypridle.conf.new\" as a reference for a proper format.\e[0m\n"
-;;esac
+y)
+	printf "\n\e[33m[$0]: Warning: \"$XDG_CONFIG_HOME/hypr/hypridle.conf\" already existed before and we didn't overwrite it. \e[0m\n"
+	printf "\e[33mPlease use \"$XDG_CONFIG_HOME/hypr/hypridle.conf.new\" as a reference for a proper format.\e[0m\n"
+	;;
+esac
 case $existed_hyprlock_conf in
-  y) printf "\n\e[33m[$0]: Warning: \"$XDG_CONFIG_HOME/hypr/hyprlock.conf\" already existed before and we didn't overwrite it. \e[0m\n"
-     printf "\e[33mPlease use \"$XDG_CONFIG_HOME/hypr/hyprlock.conf.new\" as a reference for a proper format.\e[0m\n"
-;;esac
+y)
+	printf "\n\e[33m[$0]: Warning: \"$XDG_CONFIG_HOME/hypr/hyprlock.conf\" already existed before and we didn't overwrite it. \e[0m\n"
+	printf "\e[33mPlease use \"$XDG_CONFIG_HOME/hypr/hyprlock.conf.new\" as a reference for a proper format.\e[0m\n"
+	;;
+esac
 
 if [[ -z "${ILLOGICAL_IMPULSE_VIRTUAL_ENV}" ]]; then
-  printf "\n\e[31m[$0]: \!! Important \!! : Please ensure environment variable \e[0m \$ILLOGICAL_IMPULSE_VIRTUAL_ENV \e[31m is set to proper value (by default \"~/.local/state/ags/.venv\"), or AGS config will not work. We have already provided this configuration in ~/.config/hypr/hyprland/env.conf, but you need to ensure it is included in hyprland.conf, and also a restart is needed for applying it.\e[0m\n"
+	printf "\n\e[31m[$0]: \!! Important \!! : Please ensure environment variable \e[0m \$ILLOGICAL_IMPULSE_VIRTUAL_ENV \e[31m is set to proper value (by default \"~/.local/state/ags/.venv\"), or AGS config will not work. We have already provided this configuration in ~/.config/hypr/hyprland/env.conf, but you need to ensure it is included in hyprland.conf, and also a restart is needed for applying it.\e[0m\n"
 fi
 
 if [[ ! -z "${warn_files[@]}" ]]; then
-  printf "\n\e[31m[$0]: \!! Important \!! : Please delete \e[0m ${warn_files[*]} \e[31m manually as soon as possible, since we\'re now using AUR package or local PKGBUILD to install them for Arch(based) Linux distros, and they'll take precedence over our installation, or at least take up more space.\e[0m\n"
+	printf "\n\e[31m[$0]: \!! Important \!! : Please delete \e[0m ${warn_files[*]} \e[31m manually as soon as possible, since we\'re now using AUR package or local PKGBUILD to install them for Arch(based) Linux distros, and they'll take precedence over our installation, or at least take up more space.\e[0m\n"
 fi
