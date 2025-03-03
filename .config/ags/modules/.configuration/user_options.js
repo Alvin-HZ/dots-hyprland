@@ -240,6 +240,7 @@ let configOptions = {
     },
 }
 
+
 // Override defaults with user's options
 function overrideConfigRecursive(userOverrides, configOptions = {}) {
     for (const [key, value] of Object.entries(userOverrides)) {
@@ -247,17 +248,6 @@ function overrideConfigRecursive(userOverrides, configOptions = {}) {
             overrideConfigRecursive(value, configOptions[key]);
         }
         else {
-            configOptions[key] = value;
-            continue;
-        }
-        if (configOptions[key] === undefined && check) {
-            optionsOkay = false;
-        }
-        else if (typeof value === 'object' && !(value instanceof Array)) {
-            if (key === "substitutions" || key === "regexSubstitutions" || key === "extraGptModels") {
-                overrideConfigRecursive(value, configOptions[key], false);
-            } else overrideConfigRecursive(value, configOptions[key]);
-        } else {
             configOptions[key] = value;
         }
     }
