@@ -141,7 +141,7 @@ export default () => Box({
                 vertical: true,
                 children: [
                     resources,
-                    distroAndVersion,
+                    // distroAndVersion,
                 ]
             }),
             onPrimaryClickRelease: () => {
