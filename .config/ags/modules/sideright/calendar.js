@@ -33,13 +33,13 @@ function getDateInXMonthsTime(x) {
 }
 
 const weekDays = [ // MONDAY IS THE FIRST DAY OF THE WEEK :HESRIGHTYOUKNOW:
+    { day: getString('Su'), today: 0 },
     { day: getString('Mo'), today: 0 },
     { day: getString('Tu'), today: 0 },
     { day: getString('We'), today: 0 },
     { day: getString('Th'), today: 0 },
     { day: getString('Fr'), today: 0 },
     { day: getString('Sa'), today: 0 },
-    { day: getString('Su'), today: 0 },
 ]
 
 const CalendarDay = (day, today) => Widget.Button({
