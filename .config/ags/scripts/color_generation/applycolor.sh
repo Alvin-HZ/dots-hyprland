@@ -173,6 +173,28 @@ apply_qt() {
   python "$CONFIG_DIR/scripts/kvantum/changeAdwColors.py" # apply config colors
 }
 
+
+
+apply_kitty() {
+	# Check if scripts/templates/hypr/colors.conf exists
+	if [ ! -f "scripts/templates/kitty/theme.conf" ]; then
+		echo "Template file not found for Hyprland colors. Skipping that."
+		return
+	fi
+	# Copy template
+	mkdir "$XDG_CONFIG_HOME/kitty/themes/"
+	cp "scripts/templates/kitty/theme.conf" "$XDG_CONFIG_HOME/kitty/themes/theme_new.conf"
+	# Apply colors
+	for i in "${!colorlist[@]}"; do
+		sed -i "s/{{ ${colorlist[$i]} }}/${colorvalues[$i]#\#}/g" "$XDG_CONFIG_HOME/kitty/themes/theme_new.conf"
+	done
+
+	mv "$XDG_CONFIG_HOME/kitty/themes/theme_new.conf" "$XDG_CONFIG_HOME/kitty/themes/theme.conf"
+	kitten themes --reload-in=all ags
+}
+
+
+
 colornames=$(cat $STATE_DIR/scss/_material.scss | cut -d: -f1)
 colorstrings=$(cat $STATE_DIR/scss/_material.scss | cut -d: -f2 | cut -d ' ' -f2 | cut -d ";" -f1)
 IFS=$'\n'
@@ -187,3 +209,4 @@ apply_gtk &
 apply_qt &
 apply_fuzzel &
 apply_term &
+apply_kitty &
