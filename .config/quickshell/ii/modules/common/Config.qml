@@ -56,7 +56,7 @@ Singleton {
             id: configOptionsJsonAdapter
             property JsonObject policies: JsonObject {
                 property int ai: 1 // 0: No | 1: Yes | 2: Local
-                property int weeb: 1 // 0: No | 1: Open | 2: Closet
+                property int weeb: 0 // 0: No | 1: Open | 2: Closet
             }
 
             property JsonObject ai: JsonObject {
@@ -97,8 +97,8 @@ Singleton {
                 property JsonObject protection: JsonObject {
                     // Prevent sudden bangs
                     property bool enable: true
-                    property real maxAllowedIncrease: 10
-                    property real maxAllowed: 90 // Realistically should already provide some protection when it's 99...
+                    property real maxAllowedIncrease: 100
+                    property real maxAllowed: 100 // Realistically should already provide some protection when it's 99...
                 }
             }
 
@@ -107,7 +107,7 @@ Singleton {
                 property string network: "plasmawindowed org.kde.plasma.networkmanagement"
                 property string networkEthernet: "kcmshell6 kcm_networkmanagement"
                 property string taskManager: "plasma-systemmonitor --page-name Processes"
-                property string terminal: "kitty -1" // This is only for shell actions
+                property string terminal: "kitty" // This is only for shell actions
             }
 
             property JsonObject background: JsonObject {
@@ -145,8 +145,8 @@ Singleton {
                 property list<string> screenList: [] // List of names, like "eDP-1", find out with 'hyprctl monitors' command
                 property JsonObject utilButtons: JsonObject {
                     property bool showScreenSnip: true
-                    property bool showColorPicker: false
-                    property bool showMicToggle: false
+                    property bool showColorPicker: true
+                    property bool showMicToggle: true
                     property bool showKeyboardToggle: true
                     property bool showDarkModeToggle: true
                     property bool showPerformanceProfileToggle: false
@@ -157,8 +157,8 @@ Singleton {
                 property JsonObject workspaces: JsonObject {
                     property bool monochromeIcons: true
                     property int shown: 10
-                    property bool showAppIcons: true
-                    property bool alwaysShowNumbers: false
+                    property bool showAppIcons: false
+                    property bool alwaysShowNumbers: true
                     property int showNumberDelay: 300 // milliseconds
                 }
                 property JsonObject weather: JsonObject {
@@ -235,8 +235,8 @@ Singleton {
 
             property JsonObject overview: JsonObject {
                 property bool enable: true
-                property real scale: 0.18 // Relative to screen size
-                property real rows: 2
+                property real scale: 0.12 // Relative to screen size
+                property real rows: 1
                 property real columns: 5
             }
 
@@ -274,7 +274,7 @@ Singleton {
             property JsonObject time: JsonObject {
                 // https://doc.qt.io/qt-6/qtime.html#toString
                 property string format: "hh:mm"
-                property string dateFormat: "ddd, dd/MM"
+                property string dateFormat: "ddd, MM/dd"
             }
 
             property JsonObject windows: JsonObject {
