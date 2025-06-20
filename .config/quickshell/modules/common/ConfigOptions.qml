@@ -6,7 +6,7 @@ pragma ComponentBehavior: Bound
 Singleton {
     property QtObject policies: QtObject {
         property int ai: 1 // 0: No | 1: Yes | 2: Local
-        property int weeb: 1 // 0: No | 1: Open | 2: Closet
+        property int weeb: 0 // 0: No | 1: Open | 2: Closet
     }
 
     property QtObject ai: QtObject {
@@ -25,7 +25,7 @@ Singleton {
         property QtObject protection: QtObject { // Prevent sudden bangs
             property bool enable: true
             property real maxAllowedIncrease: 10
-            property real maxAllowed: 90 // Realistically should already provide some protection when it's 99...
+            property real maxAllowed: 100 // Realistically should already provide some protection when it's 99...
         }
     }
 
@@ -65,8 +65,8 @@ Singleton {
         }
         property QtObject workspaces: QtObject {
             property int shown: 10
-            property bool showAppIcons: true
-            property bool alwaysShowNumbers: false
+            property bool showAppIcons: false
+            property bool alwaysShowNumbers: true
             property int showNumberDelay: 300 // milliseconds
         }
     }
@@ -110,8 +110,8 @@ Singleton {
     }
 
     property QtObject overview: QtObject {
-        property real scale: 0.18 // Relative to screen size
-        property real numOfRows: 2
+        property real scale: 0.12 // Relative to screen size
+        property real numOfRows: 1
         property real numOfCols: 5
         property bool showXwaylandIndicator: true
     }
@@ -149,7 +149,7 @@ Singleton {
     property QtObject time: QtObject {
         // https://doc.qt.io/qt-6/qtime.html#toString
         property string format: "hh:mm"
-        property string dateFormat: "dddd, dd/MM"
+        property string dateFormat: "dddd, MM/dd"
     }
 
     property QtObject windows: QtObject {
