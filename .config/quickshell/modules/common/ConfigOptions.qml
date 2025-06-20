@@ -6,7 +6,7 @@ import Quickshell
 Singleton {
     property QtObject policies: QtObject {
         property int ai: 1 // 0: No | 1: Yes | 2: Local
-        property int weeb: 1 // 0: No | 1: Open | 2: Closet
+        property int weeb: 0 // 0: No | 1: Open | 2: Closet
     }
 
     property QtObject ai: QtObject {
@@ -26,8 +26,8 @@ Singleton {
         property QtObject protection: QtObject {
             // Prevent sudden bangs
             property bool enable: true
-            property real maxAllowedIncrease: 10
-            property real maxAllowed: 90 // Realistically should already provide some protection when it's 99...
+            property real maxAllowedIncrease: 100
+            property real maxAllowed: 100 // Realistically should already provide some protection when it's 99...
         }
     }
 
@@ -58,8 +58,8 @@ Singleton {
         property list<string> screenList: [] // List of names, like "eDP-1", find out with 'hyprctl monitors' command
         property QtObject utilButtons: QtObject {
             property bool showScreenSnip: true
-            property bool showColorPicker: false
-            property bool showMicToggle: false
+            property bool showColorPicker: true
+            property bool showMicToggle: true
             property bool showKeyboardToggle: true
             property bool showDarkModeToggle: true
         }
@@ -68,8 +68,8 @@ Singleton {
         }
         property QtObject workspaces: QtObject {
             property int shown: 10
-            property bool showAppIcons: true
-            property bool alwaysShowNumbers: false
+            property bool showAppIcons: false
+            property bool alwaysShowNumbers: true
             property int showNumberDelay: 300 // milliseconds
         }
     }
@@ -112,8 +112,8 @@ Singleton {
     }
 
     property QtObject overview: QtObject {
-        property real scale: 0.18 // Relative to screen size
-        property real rows: 2
+        property real scale: 0.12 // Relative to screen size
+        property real rows: 1
         property real columns: 5
     }
 
@@ -150,7 +150,7 @@ Singleton {
     property QtObject time: QtObject {
         // https://doc.qt.io/qt-6/qtime.html#toString
         property string format: "hh:mm"
-        property string dateFormat: "dddd, dd/MM"
+        property string dateFormat: "dddd, MM/dd"
     }
 
     property QtObject windows: QtObject {
