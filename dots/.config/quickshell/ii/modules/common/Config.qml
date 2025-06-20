@@ -76,7 +76,7 @@ Singleton {
             id: configOptionsJsonAdapter
             property JsonObject policies: JsonObject {
                 property int ai: 1 // 0: No | 1: Yes | 2: Local
-                property int weeb: 1 // 0: No | 1: Open | 2: Closet
+                property int weeb: 0 // 0: No | 1: Open | 2: Closet
             }
 
             property JsonObject ai: JsonObject {
@@ -138,7 +138,7 @@ Singleton {
                 property string network: "kitty -1 fish -c nmtui"
                 property string networkEthernet: "kcmshell6 kcm_networkmanagement"
                 property string taskManager: "plasma-systemmonitor --page-name Processes"
-                property string terminal: "kitty -1" // This is only for shell actions
+                property string terminal: "kitty" // This is only for shell actions
             }
 
             property JsonObject background: JsonObject {
@@ -206,8 +206,8 @@ Singleton {
                 property list<string> screenList: [] // List of names, like "eDP-1", find out with 'hyprctl monitors' command
                 property JsonObject utilButtons: JsonObject {
                     property bool showScreenSnip: true
-                    property bool showColorPicker: false
-                    property bool showMicToggle: false
+                    property bool showColorPicker: true
+                    property bool showMicToggle: true
                     property bool showKeyboardToggle: true
                     property bool showDarkModeToggle: true
                     property bool showPerformanceProfileToggle: false
@@ -221,8 +221,8 @@ Singleton {
                 property JsonObject workspaces: JsonObject {
                     property bool monochromeIcons: true
                     property int shown: 10
-                    property bool showAppIcons: true
-                    property bool alwaysShowNumbers: false
+                    property bool showAppIcons: false
+                    property bool alwaysShowNumbers: true
                     property int showNumberDelay: 300 // milliseconds
                     property list<string> numberMap: ["1", "2"] // Characters to show instead of numbers on workspace indicator
                     property bool useNerdFont: false
@@ -340,8 +340,8 @@ Singleton {
 
             property JsonObject overview: JsonObject {
                 property bool enable: true
-                property real scale: 0.18 // Relative to screen size
-                property real rows: 2
+                property real scale: 0.12 // Relative to screen size
+                property real rows: 1
                 property real columns: 5
             }
 
@@ -398,8 +398,8 @@ Singleton {
             property JsonObject time: JsonObject {
                 // https://doc.qt.io/qt-6/qtime.html#toString
                 property string format: "hh:mm"
-                property string shortDateFormat: "dd/MM"
-                property string dateFormat: "ddd, dd/MM"
+                property string shortDateFormat: "MM/dd"
+                property string dateFormat: "ddd, MM/dd"
                 property JsonObject pomodoro: JsonObject {
                     property string alertSound: ""
                     property int breakTime: 300
