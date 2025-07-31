@@ -27,7 +27,7 @@ Singleton {
         running: true
         repeat: false
         onTriggered: {
-            getUsername.running = true
+            getUsername.running = false
             fileOsRelease.reload()
             const textOsRelease = fileOsRelease.text()
 
