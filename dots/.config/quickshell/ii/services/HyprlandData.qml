@@ -89,7 +89,26 @@ Singleton {
         function onRawEvent(event) {
             // console.log("Hyprland raw event:", event.name);
             if (["openlayer", "closelayer", "screencast"].includes(event.name)) return;
-            updateAll()
+            // updateAll()
+            
+            const n = event.name;
+            // print (event.name + ": " + event.data)
+            if (n.endsWith("v2"))
+                return;
+
+            if (["workspace", "moveworkspace", "activespecial", "focusedmon"].includes(n)) {
+                updateWorkspaces();
+                updateMonitors();
+            } else if (["openwindow", "closewindow", "movewindow"].includes(n)) {
+                updateWindowList();
+                updateWorkspaces();
+            } else if (n.includes("mon")) {
+                updateMonitors();
+            } else if (n.includes("workspace")) {
+                updateWorkspaces();
+            } else if (n.includes("window") || n.includes("group") || ["pin", "fullscreen", "changefloatingmode", "minimize"].includes(n)) {
+                updateWindowList();
+            }
         }
     }
 
