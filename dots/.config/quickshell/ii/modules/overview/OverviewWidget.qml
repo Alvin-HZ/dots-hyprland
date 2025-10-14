@@ -81,7 +81,7 @@ Item {
                         Rectangle { // Workspace
                             id: workspace
                             property int colIndex: index
-                            property int workspaceValue: root.workspaceGroup * workspacesShown + rowIndex * Config.options.overview.columns + colIndex + 1
+                            property int workspaceValue: monitor.activeWorkspace?.id + rowIndex * Config.options.overview.columns + colIndex - Config.options.overview.columns/2 +1
                             property color defaultWorkspaceColor: Appearance.colors.colLayer1 // TODO: reconsider this color for a cleaner look
                             property color hoveredWorkspaceColor: ColorUtils.mix(defaultWorkspaceColor, Appearance.colors.colLayer1Hover, 0.1)
                             property color hoveredBorderColor: Appearance.colors.colLayer2Hover
@@ -113,7 +113,7 @@ Item {
                                 acceptedButtons: Qt.LeftButton
                                 onPressed: {
                                     if (root.draggingTargetWorkspace === -1) {
-                                        GlobalStates.overviewOpen = false
+                                        // GlobalStates.overviewOpen = false
                                         Hyprland.dispatch(`workspace ${workspaceValue}`)
                                     }
                                 }
@@ -151,7 +151,7 @@ Item {
                         return [...ToplevelManager.toplevels.values.filter((toplevel) => {
                             const address = `0x${toplevel.HyprlandToplevel?.address}`
                             var win = windowByAddress[address]
-                            const inWorkspaceGroup = (root.workspaceGroup * root.workspacesShown < win?.workspace?.id && win?.workspace?.id <= (root.workspaceGroup + 1) * root.workspacesShown)
+                            const inWorkspaceGroup = (monitor.activeWorkspace?.id-(Config.options.overview.columns/2) <= win?.workspace?.id && win?.workspace?.id <= monitor.activeWorkspace?.id+(Config.options.overview.columns/2))
                             return inWorkspaceGroup;
                         })].reverse()
                     }
@@ -172,7 +172,7 @@ Item {
 
                     property bool atInitPosition: (initX == x && initY == y)
 
-                    property int workspaceColIndex: (windowData?.workspace.id - 1) % Config.options.overview.columns
+                    property int workspaceColIndex: (windowData?.workspace.id - 1) - monitor.activeWorkspace?.id + 3
                     property int workspaceRowIndex: Math.floor((windowData?.workspace.id - 1) % root.workspacesShown / Config.options.overview.columns)
                     xOffset: (root.workspaceImplicitWidth + workspaceSpacing) * workspaceColIndex
                     yOffset: (root.workspaceImplicitHeight + workspaceSpacing) * workspaceRowIndex
@@ -231,7 +231,7 @@ Item {
                             if (!windowData) return;
 
                             if (event.button === Qt.LeftButton) {
-                                GlobalStates.overviewOpen = false
+                                // GlobalStates.overviewOpen = false
                                 Hyprland.dispatch(`focuswindow address:${windowData.address}`)
                                 event.accepted = true
                             } else if (event.button === Qt.MiddleButton) {
@@ -253,7 +253,7 @@ Item {
                 id: focusedWorkspaceIndicator
                 property int activeWorkspaceInGroup: monitor.activeWorkspace?.id - (root.workspaceGroup * root.workspacesShown)
                 property int activeWorkspaceRowIndex: Math.floor((activeWorkspaceInGroup - 1) / Config.options.overview.columns)
-                property int activeWorkspaceColIndex: (activeWorkspaceInGroup - 1) % Config.options.overview.columns
+                property int activeWorkspaceColIndex: (Config.options.overview.columns/2)
                 x: (root.workspaceImplicitWidth + workspaceSpacing) * activeWorkspaceColIndex
                 y: (root.workspaceImplicitHeight + workspaceSpacing) * activeWorkspaceRowIndex
                 z: root.windowZ
