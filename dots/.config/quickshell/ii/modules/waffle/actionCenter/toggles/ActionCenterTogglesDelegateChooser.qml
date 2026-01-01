@@ -41,6 +41,13 @@ DelegateChooser {
         }
     }
     DelegateChoice {
+        roleValue: "rotationLock"
+        ActionCenterToggleButton {
+            toggleModel: RotationLockToggle {}
+            icon: "mobile_rotate_lock"
+        }
+    }
+    DelegateChoice {
         roleValue: "cloudflareWarp"
         ActionCenterToggleButton {
             toggleModel: CloudflareWarpToggle {}
