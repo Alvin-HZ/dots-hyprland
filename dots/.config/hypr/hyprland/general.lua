@@ -6,6 +6,7 @@ hl.monitor({
     scale = "1"
 })
 
+--[[
 hl.gesture({
     fingers = 3,
     direction = "swipe",
@@ -16,11 +17,13 @@ hl.gesture({
     direction = "pinch",
     action = "fullscreen"
 })
+]]
 hl.gesture({
     fingers = 4,
     direction = "horizontal",
     action = "workspace"
 })
+--[[
 hl.gesture({
     fingers = 4,
     direction = "up",
@@ -35,6 +38,7 @@ hl.gesture({
         hl.dispatch(hl.dsp.global("quickshell:overviewWorkspacesToggle"))
     end
 })
+]]
 
 hl.config({
     gestures = {
@@ -100,9 +104,11 @@ hl.config({
 
         },
         -- Dim
+        --[[
         dim_inactive = true,
         dim_strength = 0.05,
         dim_special = 0.2
+        ]]
     },
     animations = {
         enabled = true
@@ -264,10 +270,14 @@ hl.config({
 
         touchpad = {
             natural_scroll = true,
-            disable_while_typing = true,
-            clickfinger_behavior = true,
-            scroll_factor = 0.7
-        }
+            disable_while_typing = false,
+            clickfinger_behavior = false,
+            tap_and_drag = false,
+            scroll_factor = 0.5
+        },
+        force_no_accel = true,
+        sensitivity = 0.7,
+        special_fallthrough = false
     },
 
     misc = {
@@ -284,7 +294,9 @@ hl.config({
         allow_session_lock_restore = true,
         session_lock_xray = true,
         initial_workspace_tracking = false,
-        focus_on_activate = true
+        focus_on_activate = true,
+        close_special_on_empty = false,
+        middle_click_paste = false,
     },
 
     binds = {
